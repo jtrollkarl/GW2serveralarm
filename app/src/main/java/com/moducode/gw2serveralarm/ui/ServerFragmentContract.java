@@ -17,10 +17,12 @@ public interface ServerFragmentContract {
     interface View extends MvpView{
         void showServerList(List<ServerModel> serverModels);
         void showError(@StringRes int error, Throwable throwable);
+        void showAlarm();
     }
 
     interface Actions extends MvpPresenter<ServerFragmentContract.View>{
         void fetchServers();
+        void monitorServer(ServerModel server);
         void onPause();
     }
 

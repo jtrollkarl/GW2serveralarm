@@ -1,13 +1,14 @@
 package com.moducode.gw2serveralarm;
 
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 import com.moducode.gw2serveralarm.data.ServerModel;
@@ -16,17 +17,30 @@ import com.moducode.gw2serveralarm.retrofit.ServerService;
 import com.moducode.gw2serveralarm.schedulers.BaseSchedulerProvider;
 import com.moducode.gw2serveralarm.ui.ServerFragmentContract;
 import com.moducode.gw2serveralarm.ui.ServerFragmentPresenter;
+import com.moducode.gw2serveralarm.ui.adapter.ServerListAdapter;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 public class ServerFragment extends MvpFragment<ServerFragmentContract.View, ServerFragmentContract.Actions>
-        implements ServerFragmentContract.View  {
+        implements ServerFragmentContract.View,
+        AdapterView.OnItemClickListener {
 
     private static final String TAG = ServerFragment.class.getSimpleName();
 
+    @BindView(R.id.server_list)
+    ListView serverList;
+    Unbinder unbinder;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        serverList.setOnItemClickListener(this);
+        return view;
     }
 
     @Override
@@ -35,9 +49,26 @@ public class ServerFragment extends MvpFragment<ServerFragmentContract.View, Ser
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void showServerList(List<ServerModel> serverModels) {
+        serverList.setAdapter(new ServerListAdapter(getContext(), serverModels));
     }
+
+    @Override
+    public void showError(@StringRes int error, Throwable throwable) {
+        Log.e(TAG, "presenter error", throwable);
+    }
+
+    @Override
+    public void showAlarm() {
+
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        ServerModel model = (ServerModel) serverList.getItemAtPosition(i);
+        presenter.monitorServer(model);
+    }
+
 
     @Override
     public void onResume() {
@@ -46,12 +77,16 @@ public class ServerFragment extends MvpFragment<ServerFragmentContract.View, Ser
     }
 
     @Override
-    public void showServerList(List<ServerModel> serverModels) {
-
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override
-    public void showError(@StringRes int error, Throwable throwable) {
-        Log.e(TAG, "presenter error", throwable);
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.onPause();
     }
+
+
 }

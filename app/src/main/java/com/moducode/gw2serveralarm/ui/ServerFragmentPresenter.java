@@ -52,6 +52,11 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
     }
 
     @Override
+    public void monitorServer(String serverId) {
+
+    }
+
+    @Override
     public void onPause() {
         compositeDisposable.clear();
     }
