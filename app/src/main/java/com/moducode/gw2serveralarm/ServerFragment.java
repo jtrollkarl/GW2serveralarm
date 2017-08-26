@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 import com.moducode.gw2serveralarm.data.ServerModel;
@@ -56,6 +57,16 @@ public class ServerFragment extends MvpFragment<ServerFragmentContract.View, Ser
     @Override
     public void showError(@StringRes int error, Throwable throwable) {
         Log.e(TAG, "presenter error", throwable);
+    }
+
+    @Override
+    public void logD(String logMsg) {
+        Log.d(TAG, logMsg);
+    }
+
+    @Override
+    public void showMessage(@StringRes int msg) {
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override

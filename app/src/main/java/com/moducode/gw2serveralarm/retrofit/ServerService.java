@@ -4,7 +4,8 @@ import com.moducode.gw2serveralarm.data.ServerModel;
 
 import java.util.List;
 
-import io.reactivex.Single;
+import io.reactivex.Observable;
+
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
@@ -15,6 +16,6 @@ import retrofit2.http.Query;
 public interface ServerService {
 
     @GET("worlds")
-    Single<List<ServerModel>> listServers(@Query("ids") String id);
+    Observable<List<ServerModel>> listServers(@Query("ids") String id);
 
 }
