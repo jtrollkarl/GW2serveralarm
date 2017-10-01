@@ -18,4 +18,8 @@ public interface ServerService {
     @GET("worlds")
     Observable<List<ServerModel>> listServers(@Query("ids") String id);
 
+    @GET("worlds")
+    Observable<ServerModel> getServer(@Query("id") String id);
+
+
 }

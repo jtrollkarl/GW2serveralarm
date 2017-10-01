@@ -20,6 +20,7 @@ import com.moducode.gw2serveralarm.ui.ServerFragmentContract;
 import com.moducode.gw2serveralarm.ui.ServerFragmentPresenter;
 import com.moducode.gw2serveralarm.ui.adapter.ServerListAdapter;
 
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -51,6 +52,7 @@ public class ServerFragment extends MvpFragment<ServerFragmentContract.View, Ser
 
     @Override
     public void showServerList(List<ServerModel> serverModels) {
+        Collections.sort(serverModels);
         serverList.setAdapter(new ServerListAdapter(getContext(), serverModels));
     }
 
@@ -71,7 +73,7 @@ public class ServerFragment extends MvpFragment<ServerFragmentContract.View, Ser
 
     @Override
     public void showAlarm() {
-
+        Log.d(TAG, "show alarm!!!!!!!");
     }
 
     @Override
@@ -91,13 +93,15 @@ public class ServerFragment extends MvpFragment<ServerFragmentContract.View, Ser
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        presenter.onPause();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        presenter.onPause();
+
     }
+
 
 
 }

@@ -1,7 +1,5 @@
 package com.moducode.gw2serveralarm.ui;
 
-import android.util.Log;
-
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.moducode.gw2serveralarm.R;
 import com.moducode.gw2serveralarm.data.ServerModel;
@@ -15,11 +13,10 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.BooleanSupplier;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.observers.DisposableObserver;
-import io.reactivex.observers.DisposableSingleObserver;
 
 /**
  * Created by Jay on 2017-08-20.
@@ -31,6 +28,7 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
     private final CompositeDisposable compositeDisposable;
     private final SchedulerProvider schedulers;
     private final ServerService serverService;
+    private Disposable serverObserver;
 
     public ServerFragmentPresenter(SchedulerProvider schedulers, ServerService serverService) {
         this.compositeDisposable = new CompositeDisposable();
@@ -46,7 +44,7 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
                 .subscribeWith(new DisposableObserver<List<ServerModel>>() {
                     @Override
                     public void onComplete() {
-                        if(isViewAttached()){
+                        if (isViewAttached()) {
                             getView().showMessage(R.string.fetch_servers_success);
                         }
                     }
@@ -69,48 +67,65 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
 
     @Override
     public void monitorServer(final ServerModel server) {
-        compositeDisposable.add(Observable.interval(5, TimeUnit.SECONDS)
-                .flatMap(new Function<Long, ObservableSource<List<ServerModel>>>() {
+        if(!server.getPopulation().equals("Full")){
+            if(isViewAttached()){
+                getView().showMessage(R.string.msg_server_not_full);
+                return;
+            }
+        }
+
+        if(serverObserver != null){
+            serverObserver.dispose();
+        }
+
+        serverObserver = getMonitoringObservable(server).subscribeWith(getMonitoringSubscriber());
+    }
+
+    private Observable<ServerModel> getMonitoringObservable(final ServerModel server){
+        return Observable.interval(5, TimeUnit.SECONDS)
+                .flatMap(new Function<Long, ObservableSource<ServerModel>>() {
                     @Override
-                    public ObservableSource<List<ServerModel>> apply(@NonNull Long aLong) throws Exception {
-                        return serverService.listServers(String.valueOf(server.getId()));
+                    public ObservableSource<ServerModel> apply(@NonNull Long aLong) throws Exception {
+                        return serverService.getServer(String.valueOf(server.getId()));
                     }
                 })
-                .takeUntil(new Predicate<List<ServerModel>>() {
+                .takeUntil(new Predicate<ServerModel>() {
                     @Override
-                    public boolean test(@NonNull List<ServerModel> serverModels) throws Exception {
-                        return serverModels.get(0).getPopulation().equals("Full");
+                    public boolean test(@NonNull ServerModel serverModel) throws Exception {
+                        return !serverModel.getPopulation().equals("Full");
                     }
                 })
                 .retry()
                 .observeOn(schedulers.ui())
-                .subscribeOn(schedulers.io())
-                .subscribeWith(new DisposableObserver<List<ServerModel>>(){
-
-                    @Override
-                    public void onNext(@NonNull List<ServerModel> serverModels) {
-                        if(isViewAttached()){
-                            getView().logD("ping");
-                        }
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        if(isViewAttached()){
-                            getView().showError(R.string.error_servers_fetch, e);
-                        }
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        if(isViewAttached()){
-                            getView().logD("complete");
-                        }
-                    }
-                }));
-
+                .subscribeOn(schedulers.io());
     }
 
+    private DisposableObserver<ServerModel> getMonitoringSubscriber(){
+        return new DisposableObserver<ServerModel>() {
+
+            @Override
+            public void onNext(@NonNull ServerModel serverModel) {
+                if (isViewAttached()) {
+                    getView().logD("ping");
+                }
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+                if (isViewAttached()) {
+                    getView().showError(R.string.error_servers_fetch, e);
+                }
+            }
+
+            @Override
+            public void onComplete() {
+                if (isViewAttached()) {
+                    getView().logD("complete");
+                    getView().showAlarm();
+                }
+            }
+        };
+    }
 
     @Override
     public void onPause() {

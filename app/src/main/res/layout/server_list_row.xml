@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
     android:padding="8dp">
 
     <TextView
         android:id="@+id/server_row_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Server name"/>
+        android:layout_gravity="left"
+        tools:text="Server name" />
 
     <TextView
         android:id="@+id/server_row_population"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Population"/>
+        android:layout_gravity="right"
+        tools:text="Population" />
 
-</LinearLayout>
+</FrameLayout>

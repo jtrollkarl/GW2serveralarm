@@ -1,10 +1,14 @@
 
 package com.moducode.gw2serveralarm.data;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ServerModel {
+import java.util.Comparator;
+
+public class ServerModel implements  Comparable<ServerModel> {
 
     @SerializedName("id")
     @Expose
@@ -15,6 +19,14 @@ public class ServerModel {
     @SerializedName("population")
     @Expose
     private String population;
+
+    private int populationLevel;
+
+    public ServerModel(int id, String name, String population) {
+        this.id = id;
+        this.name = name;
+        this.population = population;
+    }
 
     public int getId() {
         return id;
@@ -40,4 +52,30 @@ public class ServerModel {
         this.population = population;
     }
 
+    public void setPopulationLevel(int level){
+        this.populationLevel = level;
+    }
+
+    public int getPopulationLevel(){
+        switch (population){
+            case "Low":
+                return 0;
+            case "Medium":
+                return 1;
+            case "High":
+                return 2;
+            case "VeryHigh":
+                return 3;
+            case "Full":
+                return 4;
+            default:
+                return 0;
+        }
+    }
+
+
+    @Override
+    public int compareTo(@NonNull ServerModel serverModel) {
+        return this.getPopulationLevel() - serverModel.getPopulationLevel();
+    }
 }

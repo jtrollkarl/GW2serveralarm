@@ -3,4 +3,5 @@
     <string name="action_settings">Settings</string>
     <string name="error_servers_fetch">Error fetching servers</string>
     <string name="fetch_servers_success">Fetched servers</string>
+    <string name="msg_server_not_full">This server is not full!</string>
 </resources>
