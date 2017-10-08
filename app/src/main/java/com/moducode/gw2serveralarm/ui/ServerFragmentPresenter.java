@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -28,7 +29,6 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
     private final CompositeDisposable compositeDisposable;
     private final SchedulerProvider schedulers;
     private final ServerService serverService;
-    private Disposable serverObserver;
 
     public ServerFragmentPresenter(SchedulerProvider schedulers, ServerService serverService) {
         this.compositeDisposable = new CompositeDisposable();
@@ -67,21 +67,72 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
 
     @Override
     public void monitorServer(final ServerModel server) {
-        if(!server.getPopulation().equals("Full")){
-            if(isViewAttached()){
+/*        if (!server.getPopulation().equals("Full")) {
+            if (isViewAttached()) {
                 getView().showMessage(R.string.msg_server_not_full);
                 return;
             }
-        }
+        }*/
 
-        if(serverObserver != null){
-            serverObserver.dispose();
-        }
+        Observable.interval(5, TimeUnit.SECONDS)
+                .flatMap(new Function<Long, ObservableSource<ServerModel>>() {
+                    @Override
+                    public ObservableSource<ServerModel> apply(@NonNull Long aLong) throws Exception {
+                        return serverService.getServer(String.valueOf(server.getId()));
+                    }
+                })
+                .takeUntil(new Predicate<ServerModel>() {
+                    @Override
+                    public boolean test(@NonNull ServerModel serverModel) throws Exception {
+                        return serverModel.getPopulationLevel() < 4;
+                    }
+                })
+                .retryWhen(new Function<Observable<Throwable>, ObservableSource<?>>() {
+                    @Override
+                    public ObservableSource<?> apply(@NonNull Observable<Throwable> throwableObservable) throws Exception {
+                        return throwableObservable.flatMap(new Function<Throwable, ObservableSource<?>>() {
+                            @Override
+                            public ObservableSource<?> apply(@NonNull Throwable throwable) throws Exception {
+                                System.out.println("Error, retry in 10 seconds");
+                                return Observable.timer(5, TimeUnit.SECONDS).timeInterval();
+                            }
+                        });
+                    }
+                })
+                .observeOn(schedulers.ui())
+                .subscribe(new Observer<ServerModel>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        if (isViewAttached()) {
+                            //tell view we are now listening
+                        }
+                    }
 
-        serverObserver = getMonitoringObservable(server).subscribeWith(getMonitoringSubscriber());
+                    @Override
+                    public void onNext(@NonNull ServerModel serverModel) {
+                        if (isViewAttached()) {
+                            getView().logD("ping");
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        if (isViewAttached()) {
+                            getView().showError(R.string.error_servers_fetch, e);
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        if (isViewAttached()) {
+                            getView().logD("complete");
+                            getView().showAlarm();
+                        }
+                    }
+                });
     }
 
-    private Observable<ServerModel> getMonitoringObservable(final ServerModel server){
+    private Observable<ServerModel> getMonitoringObservable(final ServerModel server) {
         return Observable.interval(5, TimeUnit.SECONDS)
                 .flatMap(new Function<Long, ObservableSource<ServerModel>>() {
                     @Override
@@ -98,33 +149,6 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
                 .retry()
                 .observeOn(schedulers.ui())
                 .subscribeOn(schedulers.io());
-    }
-
-    private DisposableObserver<ServerModel> getMonitoringSubscriber(){
-        return new DisposableObserver<ServerModel>() {
-
-            @Override
-            public void onNext(@NonNull ServerModel serverModel) {
-                if (isViewAttached()) {
-                    getView().logD("ping");
-                }
-            }
-
-            @Override
-            public void onError(@NonNull Throwable e) {
-                if (isViewAttached()) {
-                    getView().showError(R.string.error_servers_fetch, e);
-                }
-            }
-
-            @Override
-            public void onComplete() {
-                if (isViewAttached()) {
-                    getView().logD("complete");
-                    getView().showAlarm();
-                }
-            }
-        };
     }
 
     @Override
