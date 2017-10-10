@@ -29,7 +29,7 @@ dependencies {
     compile 'com.android.support:design:26.0.1'
 
     // Mosby
-    compile 'com.hannesdorfmann.mosby3:viewstate:3.0.4'
+    compile 'com.hannesdorfmann.mosby3:mvp-lce:3.0.4'
 
     // Retrofit
     compile 'com.squareup.retrofit2:retrofit:2.3.0'

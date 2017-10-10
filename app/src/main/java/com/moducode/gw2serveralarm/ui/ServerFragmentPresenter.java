@@ -6,6 +6,7 @@ import com.moducode.gw2serveralarm.data.ServerModel;
 import com.moducode.gw2serveralarm.retrofit.ServerService;
 import com.moducode.gw2serveralarm.schedulers.SchedulerProvider;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -37,7 +38,9 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
     }
 
     @Override
-    public void fetchServers() {
+    public void fetchServers(final boolean pullToRefresh) {
+        getView().showLoading(pullToRefresh);
+
         compositeDisposable.add(serverService.listServers("all")
                 .subscribeOn(schedulers.io())
                 .observeOn(schedulers.ui())
@@ -46,20 +49,22 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
                     public void onComplete() {
                         if (isViewAttached()) {
                             getView().showMessage(R.string.fetch_servers_success);
+                            getView().showContent();
                         }
                     }
 
                     @Override
                     public void onNext(@NonNull List<ServerModel> serverModels) {
                         if (isViewAttached()) {
-                            getView().showServerList(serverModels);
+                            Collections.sort(serverModels);
+                            getView().setData(serverModels);
                         }
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
                         if (isViewAttached()) {
-                            getView().showError(R.string.error_servers_fetch, e);
+                            getView().showError(e, pullToRefresh);
                         }
                     }
                 }));
@@ -93,7 +98,6 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
                         return throwableObservable.flatMap(new Function<Throwable, ObservableSource<?>>() {
                             @Override
                             public ObservableSource<?> apply(@NonNull Throwable throwable) throws Exception {
-                                System.out.println("Error, retry in 10 seconds");
                                 return Observable.timer(5, TimeUnit.SECONDS).timeInterval();
                             }
                         });
@@ -118,7 +122,7 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
                     @Override
                     public void onError(@NonNull Throwable e) {
                         if (isViewAttached()) {
-                            getView().showError(R.string.error_servers_fetch, e);
+                            getView().showError(e, false);
                         }
                     }
 

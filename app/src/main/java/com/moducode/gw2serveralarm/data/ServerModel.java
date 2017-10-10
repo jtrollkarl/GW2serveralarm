@@ -1,6 +1,7 @@
 
 package com.moducode.gw2serveralarm.data;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
@@ -8,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Comparator;
 
-public class ServerModel implements  Comparable<ServerModel> {
+public class ServerModel implements Comparable<ServerModel> {
 
     @SerializedName("id")
     @Expose
@@ -73,6 +74,22 @@ public class ServerModel implements  Comparable<ServerModel> {
         }
     }
 
+    public int getPopulationColor(){
+        switch (population){
+            case "Low":
+                return Color.parseColor("#C6E0B4");
+            case "Medium":
+                return Color.parseColor("#A9D08E");
+            case "High":
+                return Color.parseColor("#FFC000");
+            case "VeryHigh":
+                return Color.parseColor("#ED7D31");
+            case "Full":
+                return Color.parseColor("#FF0000");
+            default:
+                return Color.parseColor("#C6E0B4");
+        }
+    }
 
     @Override
     public int compareTo(@NonNull ServerModel serverModel) {
