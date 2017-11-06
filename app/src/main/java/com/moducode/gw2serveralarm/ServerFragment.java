@@ -35,7 +35,6 @@ public class ServerFragment extends MvpLceFragment<SwipeRefreshLayout, List<Serv
 
     private static final String TAG = ServerFragment.class.getSimpleName();
 
-
     Unbinder unbinder;
     @BindView(R.id.server_recycler)
     RecyclerView serverRecycler;
@@ -65,6 +64,7 @@ public class ServerFragment extends MvpLceFragment<SwipeRefreshLayout, List<Serv
 
         loadData(false);
     }
+
 
     @Override
     public ServerFragmentContract.Actions createPresenter() {
@@ -100,8 +100,9 @@ public class ServerFragment extends MvpLceFragment<SwipeRefreshLayout, List<Serv
 
     @Override
     protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
-        return "Error fetching countries";
+        return "Error fetching servers";
     }
+
 
     @Override
     public void showContent() {
