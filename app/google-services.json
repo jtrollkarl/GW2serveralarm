@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "914509751457",
+    "firebase_url": "https://gw2server.firebaseio.com",
+    "project_id": "gw2server",
+    "storage_bucket": "gw2server.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:914509751457:android:b94d7f068dbf2239",
+        "android_client_info": {
+          "package_name": "com.moducode.gw2serveralarm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "914509751457-s42bjm9k0ftlt6sk97ekc1ks6br9q7t3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.moducode.gw2serveralarm",
+            "certificate_hash": "5e18564e825c4c7866b6529f517517dd88ce2fe1"
+          }
+        },
+        {
+          "client_id": "914509751457-iar1i8gtu7eq38lifif3du9ro7bp7t1i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYVjanI_GU5PFR8Lb2GLWwGKG4sbZUaoI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "914509751457-iar1i8gtu7eq38lifif3du9ro7bp7t1i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
