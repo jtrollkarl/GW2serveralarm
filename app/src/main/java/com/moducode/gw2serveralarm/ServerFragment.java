@@ -18,6 +18,7 @@ import com.moducode.gw2serveralarm.data.ServerModel;
 import com.moducode.gw2serveralarm.retrofit.RetrofitFactory;
 import com.moducode.gw2serveralarm.retrofit.ServerService;
 import com.moducode.gw2serveralarm.schedulers.BaseSchedulerProvider;
+import com.moducode.gw2serveralarm.service.FcmSubscribeServiceImpl;
 import com.moducode.gw2serveralarm.ui.ServerFragmentContract;
 import com.moducode.gw2serveralarm.ui.ServerFragmentPresenter;
 import com.moducode.gw2serveralarm.ui.adapter.ServerListAdapter;
@@ -68,7 +69,7 @@ public class ServerFragment extends MvpLceFragment<SwipeRefreshLayout, List<Serv
 
     @Override
     public ServerFragmentContract.Actions createPresenter() {
-        return new ServerFragmentPresenter(new BaseSchedulerProvider(), RetrofitFactory.create(ServerService.class));
+        return new ServerFragmentPresenter(new BaseSchedulerProvider(), RetrofitFactory.create(ServerService.class), new FcmSubscribeServiceImpl());
     }
 
     @Override
@@ -103,17 +104,10 @@ public class ServerFragment extends MvpLceFragment<SwipeRefreshLayout, List<Serv
         return "Error fetching servers";
     }
 
-
     @Override
     public void showContent() {
         super.showContent();
         contentView.setRefreshing(false);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 
     @Override
@@ -130,5 +124,23 @@ public class ServerFragment extends MvpLceFragment<SwipeRefreshLayout, List<Serv
     @Override
     public void onRefresh() {
         loadData(true);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        presenter.onStart();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @Override
+    public void onDestroy() {
+        presenter.onDestroy();
+        super.onDestroy();
     }
 }

@@ -1,10 +1,12 @@
 package com.moducode.gw2serveralarm.ui;
 
 import com.moducode.gw2serveralarm.R;
+import com.moducode.gw2serveralarm.data.MessageEvent;
 import com.moducode.gw2serveralarm.data.ServerModel;
 import com.moducode.gw2serveralarm.retrofit.ServerService;
 import com.moducode.gw2serveralarm.schedulers.ImmediateSchedulers;
 import com.moducode.gw2serveralarm.schedulers.SchedulerProvider;
+import com.moducode.gw2serveralarm.service.FcmSubscribeService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +17,7 @@ import org.mockito.MockitoAnnotations;
 import io.reactivex.Observable;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -32,6 +35,9 @@ public class ServerFragmentPresenterTest {
     @Mock
     private ServerService serverService;
 
+    @Mock
+    FcmSubscribeService subscribeService;
+
     private ServerModel fullServer;
     private ServerModel nonFullServer;
 
@@ -39,7 +45,7 @@ public class ServerFragmentPresenterTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        serverPresenter = new ServerFragmentPresenter(new ImmediateSchedulers(), serverService);
+        serverPresenter = new ServerFragmentPresenter(new ImmediateSchedulers(), serverService, subscribeService);
         serverPresenter.attachView(view);
 
         fullServer = new ServerModel(1, "Test", "Full");
@@ -59,7 +65,13 @@ public class ServerFragmentPresenterTest {
 
     @Test
     public void monitorServer() throws Exception {
-
+        serverPresenter.monitorServer(fullServer);
+        verify(subscribeService).subscribeToTopic("1");
     }
 
+    @Test
+    public void onNotificationReceived() throws Exception{
+        serverPresenter.onNotificationReceived(new MessageEvent("test"));
+        verify(view).showAlarm();
+    }
 }

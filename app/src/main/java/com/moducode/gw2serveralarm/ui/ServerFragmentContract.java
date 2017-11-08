@@ -5,6 +5,7 @@ import android.support.annotation.StringRes;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 import com.hannesdorfmann.mosby3.mvp.lce.MvpLceView;
+import com.moducode.gw2serveralarm.data.MessageEvent;
 import com.moducode.gw2serveralarm.data.ServerModel;
 
 import java.util.List;
@@ -25,7 +26,10 @@ public interface ServerFragmentContract {
     interface Actions extends MvpPresenter<ServerFragmentContract.View>{
         void fetchServers(boolean pullToRefresh);
         void monitorServer(ServerModel server);
+        void onNotificationReceived(MessageEvent messageEvent);
+        void onStart();
         void onPause();
+        void onDestroy();
     }
 
 }

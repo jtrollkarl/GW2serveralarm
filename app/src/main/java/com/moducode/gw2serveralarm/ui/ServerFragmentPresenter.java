@@ -2,22 +2,21 @@ package com.moducode.gw2serveralarm.ui;
 
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.moducode.gw2serveralarm.R;
+import com.moducode.gw2serveralarm.data.MessageEvent;
 import com.moducode.gw2serveralarm.data.ServerModel;
 import com.moducode.gw2serveralarm.retrofit.ServerService;
 import com.moducode.gw2serveralarm.schedulers.SchedulerProvider;
+import com.moducode.gw2serveralarm.service.FcmSubscribeService;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
 import io.reactivex.observers.DisposableObserver;
 
 /**
@@ -27,14 +26,17 @@ import io.reactivex.observers.DisposableObserver;
 public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentContract.View>
         implements ServerFragmentContract.Actions {
 
-    private final CompositeDisposable compositeDisposable;
     private final SchedulerProvider schedulers;
     private final ServerService serverService;
+    private final FcmSubscribeService fcmSubscribeService;
+    private final CompositeDisposable compositeDisposable;
 
-    public ServerFragmentPresenter(SchedulerProvider schedulers, ServerService serverService) {
-        this.compositeDisposable = new CompositeDisposable();
+
+    public ServerFragmentPresenter(SchedulerProvider schedulers, ServerService serverService, FcmSubscribeService fcmSubscribeService) {
         this.schedulers = schedulers;
         this.serverService = serverService;
+        this.fcmSubscribeService = fcmSubscribeService;
+        this.compositeDisposable = new CompositeDisposable();
     }
 
     @Override
@@ -73,16 +75,35 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
     }
 
     @Override
-    public void monitorServer(final ServerModel server) {
-        // TODO: 2017-11-06 this method will tell fcm it wants to observe push notifications with a specific server ID
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNotificationReceived(MessageEvent messageEvent) {
+        getView().logD(messageEvent.getMessage());
         if(isViewAttached()){
-            getView().logD("presenter: " + server.getName());
+            getView().showAlarm();
         }
+        // TODO: 2017-11-08 show alarm
     }
 
+    @Override
+    public void monitorServer(final ServerModel server) {
+        fcmSubscribeService.subscribeToTopic(String.valueOf(server.getId()));
+    }
+
+    @Override
+    public void onStart() {
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
 
     @Override
     public void onPause() {
         compositeDisposable.clear();
     }
+
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+    }
+
 }
