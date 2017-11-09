@@ -19,7 +19,24 @@ public class FcmMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.d(TAG, "test");
-        EventBus.getDefault().post(new MessageEvent(remoteMessage.getMessageId()));
+
+        EventBus.getDefault().post(new MessageEvent(extractPayload(remoteMessage)));
     }
 
+    private String extractPayload(RemoteMessage message){
+        return "Key: "+  message.getCollapseKey() +
+                " From: " + message.getFrom() +
+                " Id: "+ message.getMessageId() +
+                " Type: "+ message.getMessageType() +
+                " Sent at: " + message.getSentTime() +
+                " To: " + message.getTo() + extractNotification(message);
+    }
+
+    private String extractNotification(RemoteMessage message){
+        if(message.getNotification() != null){
+            return message.getNotification().getTitle() + " " + message.getNotification().getBody();
+        }else {
+            return "No notification";
+        }
+    }
 }
