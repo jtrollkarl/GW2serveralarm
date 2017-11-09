@@ -66,12 +66,14 @@ public class ServerFragmentPresenterTest {
     @Test
     public void monitorServer() throws Exception {
         serverPresenter.monitorServer(fullServer);
+        verify(view).showObservingView();
         verify(subscribeService).subscribeToTopic("1");
     }
 
     @Test
     public void onNotificationReceived() throws Exception{
         serverPresenter.onNotificationReceived(new MessageEvent("test"));
+        verify(view).hideObservingView();
         verify(view).showAlarm();
     }
 }

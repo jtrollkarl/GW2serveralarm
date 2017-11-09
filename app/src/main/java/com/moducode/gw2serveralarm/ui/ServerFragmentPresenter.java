@@ -80,12 +80,16 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
         getView().logD(messageEvent.getMessage());
         if(isViewAttached()){
             getView().showAlarm();
+            getView().hideObservingView();
         }
         // TODO: 2017-11-08 show alarm
     }
 
     @Override
     public void monitorServer(final ServerModel server) {
+        if(isViewAttached()){
+            getView().showObservingView();
+        }
         fcmSubscribeService.subscribeToTopic(String.valueOf(server.getId()));
     }
 

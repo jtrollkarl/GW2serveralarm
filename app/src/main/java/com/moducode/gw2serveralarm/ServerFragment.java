@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hannesdorfmann.mosby3.mvp.lce.MvpLceFragment;
@@ -41,6 +42,8 @@ public class ServerFragment extends MvpLceFragment<SwipeRefreshLayout, List<Serv
     RecyclerView serverRecycler;
     @BindView(R.id.contentView)
     SwipeRefreshLayout contentView;
+    @BindView(R.id.monitoringView)
+    TextView monitoringView;
 
     private ServerListAdapter adapter;
 
@@ -87,6 +90,18 @@ public class ServerFragment extends MvpLceFragment<SwipeRefreshLayout, List<Serv
     @Override
     public void showMessage(@StringRes int msg) {
         Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showObservingView() {
+        contentView.setVisibility(View.GONE);
+        monitoringView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideObservingView() {
+        contentView.setVisibility(View.VISIBLE);
+        monitoringView.setVisibility(View.GONE);
     }
 
     @Override
