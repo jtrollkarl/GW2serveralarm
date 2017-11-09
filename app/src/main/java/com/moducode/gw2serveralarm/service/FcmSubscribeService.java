@@ -10,4 +10,6 @@ public interface FcmSubscribeService {
 
     void subscribeToTopic(String topicId);
 
+    void unSubscribeFromTopic(String topicId);
+
 }

@@ -13,4 +13,9 @@ public class FcmSubscribeServiceImpl implements FcmSubscribeService {
         FirebaseMessaging.getInstance().subscribeToTopic(topicId);
     }
 
+    @Override
+    public void unSubscribeFromTopic(String topicId) {
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(topicId);
+    }
+
 }
