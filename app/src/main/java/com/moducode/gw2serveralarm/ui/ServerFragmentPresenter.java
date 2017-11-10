@@ -1,5 +1,7 @@
 package com.moducode.gw2serveralarm.ui;
 
+import android.util.Log;
+
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.moducode.gw2serveralarm.R;
 import com.moducode.gw2serveralarm.data.MessageEvent;
@@ -26,6 +28,8 @@ import io.reactivex.observers.DisposableObserver;
 
 public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentContract.View>
         implements ServerFragmentContract.Actions {
+
+    private static final String TAG = ServerFragmentPresenter.class.getSimpleName();
 
     private final SchedulerProvider schedulers;
     private final ServerService serverService;
@@ -93,6 +97,14 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
     }
 
     @Override
+    public void onClickMonitoringView() {
+        if(isViewAttached()){
+            getView().hideObservingView();
+        }
+        fetchServers(false);
+    }
+
+    @Override
     public void monitorServer(final ServerModel server) {
         if(isViewAttached()){
             getView().showObservingView();
@@ -108,6 +120,9 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
                 getView().showObservingView();
             }
         }else {
+            if(isViewAttached()){
+                getView().hideObservingView();
+            }
             fetchServers(false);
         }
     }

@@ -101,6 +101,7 @@ public class ServerFragmentPresenterTest {
         verify(view).setData(ArgumentMatchers.<ServerModel>anyList());
         verify(view).showMessage(R.string.fetch_servers_success);
         verify(view).showContent();
+        verify(view).hideObservingView();
     }
 
     @Test
@@ -109,8 +110,7 @@ public class ServerFragmentPresenterTest {
         when(serverService.listServers("all")).thenReturn(Observable.just(serverModelList));
 
         subject.onResume();
-        // TODO: 2017-11-10 fill in rest of test
-
+        verify(view).showObservingView();
     }
 
 }

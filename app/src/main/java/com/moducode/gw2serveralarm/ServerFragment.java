@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public class ServerFragment extends MvpLceFragment<SwipeRefreshLayout, List<ServerModel>, ServerFragmentContract.View, ServerFragmentContract.Actions>
@@ -45,6 +47,10 @@ public class ServerFragment extends MvpLceFragment<SwipeRefreshLayout, List<Serv
     SwipeRefreshLayout contentView;
     @BindView(R.id.monitoringView)
     TextView monitoringView;
+    @BindView(R.id.loadingView)
+    ProgressBar loadingView;
+    @BindView(R.id.errorView)
+    TextView errorView;
 
     private ServerListAdapter adapter;
 
@@ -66,9 +72,7 @@ public class ServerFragment extends MvpLceFragment<SwipeRefreshLayout, List<Serv
         serverRecycler.setLayoutManager(layoutManager);
         serverRecycler.addItemDecoration(new DividerItemDecoration(serverRecycler.getContext(), layoutManager.getOrientation()));
         serverRecycler.setAdapter(adapter);
-
     }
-
 
     @Override
     public ServerFragmentContract.Actions createPresenter() {
@@ -156,6 +160,7 @@ public class ServerFragment extends MvpLceFragment<SwipeRefreshLayout, List<Serv
     public void onResume() {
         super.onResume();
         presenter.onResume();
+
     }
 
     @Override
@@ -169,4 +174,14 @@ public class ServerFragment extends MvpLceFragment<SwipeRefreshLayout, List<Serv
         presenter.onDestroy();
         super.onDestroy();
     }
+
+    @OnClick({R.id.monitoringView})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.monitoringView:
+                presenter.onClickMonitoringView();
+                break;
+        }
+    }
+
 }

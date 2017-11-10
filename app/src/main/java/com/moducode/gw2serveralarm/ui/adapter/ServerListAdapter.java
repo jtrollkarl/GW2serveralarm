@@ -58,7 +58,11 @@ public class ServerListAdapter extends RecyclerView.Adapter<ServerListAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return serverModelList.size();
+        if(serverModelList != null){
+            return serverModelList.size();
+        }else {
+            return 0;
+        }
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{

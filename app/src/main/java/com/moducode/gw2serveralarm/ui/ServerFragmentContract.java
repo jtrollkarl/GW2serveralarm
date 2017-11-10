@@ -28,6 +28,7 @@ public interface ServerFragmentContract {
         void fetchServers(boolean pullToRefresh);
         void monitorServer(ServerModel server);
         void onNotificationReceived(MessageEvent messageEvent);
+        void onClickMonitoringView();
         void onStart();
         void onResume();
         void onPause();
