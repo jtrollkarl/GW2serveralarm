@@ -88,11 +88,15 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
         sharedPrefsManager.clearSavedPrefs();
         if(isViewAttached()){
             getView().showAlarm();
+            getView().hideObservingView();
         }
     }
 
     @Override
     public void monitorServer(final ServerModel server) {
+        if(isViewAttached()){
+            getView().showObservingView();
+        }
         fcmSubscribeService.subscribeToTopic(String.valueOf(server.getId()));
         sharedPrefsManager.saveServer(String.valueOf(server.getId()));
     }
@@ -100,7 +104,9 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
     @Override
     public void onResume() {
         if(sharedPrefsManager.isMonitoringServer()){
-            // TODO: 2017-11-10 show monitoring view
+            if(isViewAttached()){
+                getView().showObservingView();
+            }
         }else {
             fetchServers(false);
         }

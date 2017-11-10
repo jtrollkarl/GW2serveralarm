@@ -77,13 +77,18 @@ public class ServerFragmentPresenterTest {
     public void monitorServer() throws Exception {
         subject.monitorServer(fullServer);
         verify(fcmSubscribeService).subscribeToTopic(String.valueOf(fullServer.getId()));
+        verify(view).showObservingView();
         verify(sharedPrefsManager).saveServer(String.valueOf(fullServer.getId()));
     }
 
     @Test
     public void onNotificationReceived() throws Exception{
+        when(sharedPrefsManager.getSavedServer()).thenReturn("test");
+
         subject.onNotificationReceived(new MessageEvent("test"));
+        verify(view).hideObservingView();
         verify(view).showAlarm();
+        verify(fcmSubscribeService).unSubscribeFromTopic(anyString());
         verify(sharedPrefsManager).clearSavedPrefs();
     }
 
