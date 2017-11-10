@@ -1,4 +1,4 @@
-package com.moducode.gw2serveralarm;
+package com.moducode.gw2serveralarm.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,14 +16,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hannesdorfmann.mosby3.mvp.lce.MvpLceFragment;
+import com.moducode.gw2serveralarm.R;
 import com.moducode.gw2serveralarm.data.ServerModel;
 import com.moducode.gw2serveralarm.retrofit.RetrofitFactory;
 import com.moducode.gw2serveralarm.retrofit.ServerService;
 import com.moducode.gw2serveralarm.schedulers.BaseSchedulerProvider;
 import com.moducode.gw2serveralarm.service.FcmSubscribeServiceImpl;
 import com.moducode.gw2serveralarm.service.SharedPrefsManagerImpl;
-import com.moducode.gw2serveralarm.ui.ServerFragmentContract;
-import com.moducode.gw2serveralarm.ui.ServerFragmentPresenter;
 import com.moducode.gw2serveralarm.ui.adapter.ServerListAdapter;
 
 import java.util.List;
