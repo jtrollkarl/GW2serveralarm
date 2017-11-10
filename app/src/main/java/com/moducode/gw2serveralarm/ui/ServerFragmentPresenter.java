@@ -7,6 +7,7 @@ import com.moducode.gw2serveralarm.data.ServerModel;
 import com.moducode.gw2serveralarm.retrofit.ServerService;
 import com.moducode.gw2serveralarm.schedulers.SchedulerProvider;
 import com.moducode.gw2serveralarm.service.FcmSubscribeService;
+import com.moducode.gw2serveralarm.service.SharedPrefsManager;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -29,13 +30,18 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
     private final SchedulerProvider schedulers;
     private final ServerService serverService;
     private final FcmSubscribeService fcmSubscribeService;
+    private final SharedPrefsManager sharedPrefsManager;
     private final CompositeDisposable compositeDisposable;
 
 
-    public ServerFragmentPresenter(SchedulerProvider schedulers, ServerService serverService, FcmSubscribeService fcmSubscribeService) {
+    public ServerFragmentPresenter(SchedulerProvider schedulers,
+                                   ServerService serverService,
+                                   FcmSubscribeService fcmSubscribeService,
+                                   SharedPrefsManager sharedPrefsManager) {
         this.schedulers = schedulers;
         this.serverService = serverService;
         this.fcmSubscribeService = fcmSubscribeService;
+        this.sharedPrefsManager = sharedPrefsManager;
         this.compositeDisposable = new CompositeDisposable();
     }
 
@@ -78,15 +84,26 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onNotificationReceived(MessageEvent messageEvent) {
         getView().logD(messageEvent.getMessage());
+        fcmSubscribeService.unSubscribeFromTopic(sharedPrefsManager.getSavedServer());
+        sharedPrefsManager.clearSavedPrefs();
         if(isViewAttached()){
             getView().showAlarm();
         }
-        // TODO: 2017-11-08 show alarm
     }
 
     @Override
     public void monitorServer(final ServerModel server) {
         fcmSubscribeService.subscribeToTopic(String.valueOf(server.getId()));
+        sharedPrefsManager.saveServer(String.valueOf(server.getId()));
+    }
+
+    @Override
+    public void onResume() {
+        if(sharedPrefsManager.isMonitoringServer()){
+            // TODO: 2017-11-10 show monitoring view
+        }else {
+            fetchServers(false);
+        }
     }
 
     @Override

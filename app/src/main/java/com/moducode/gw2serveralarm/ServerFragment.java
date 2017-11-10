@@ -19,6 +19,7 @@ import com.moducode.gw2serveralarm.retrofit.RetrofitFactory;
 import com.moducode.gw2serveralarm.retrofit.ServerService;
 import com.moducode.gw2serveralarm.schedulers.BaseSchedulerProvider;
 import com.moducode.gw2serveralarm.service.FcmSubscribeServiceImpl;
+import com.moducode.gw2serveralarm.service.SharedPrefsManagerImpl;
 import com.moducode.gw2serveralarm.ui.ServerFragmentContract;
 import com.moducode.gw2serveralarm.ui.ServerFragmentPresenter;
 import com.moducode.gw2serveralarm.ui.adapter.ServerListAdapter;
@@ -63,13 +64,17 @@ public class ServerFragment extends MvpLceFragment<SwipeRefreshLayout, List<Serv
         serverRecycler.addItemDecoration(new DividerItemDecoration(serverRecycler.getContext(), layoutManager.getOrientation()));
         serverRecycler.setAdapter(adapter);
 
-        loadData(false);
     }
 
 
     @Override
     public ServerFragmentContract.Actions createPresenter() {
-        return new ServerFragmentPresenter(new BaseSchedulerProvider(), RetrofitFactory.create(ServerService.class), new FcmSubscribeServiceImpl());
+        return new ServerFragmentPresenter(
+                new BaseSchedulerProvider(),
+                RetrofitFactory.create(ServerService.class),
+                new FcmSubscribeServiceImpl(),
+                new SharedPrefsManagerImpl(getActivity().getApplicationContext())
+        );
     }
 
     @Override
@@ -130,6 +135,12 @@ public class ServerFragment extends MvpLceFragment<SwipeRefreshLayout, List<Serv
     public void onStart() {
         super.onStart();
         presenter.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.onResume();
     }
 
     @Override

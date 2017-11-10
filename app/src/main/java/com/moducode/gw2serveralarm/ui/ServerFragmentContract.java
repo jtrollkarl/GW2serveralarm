@@ -28,6 +28,7 @@ public interface ServerFragmentContract {
         void monitorServer(ServerModel server);
         void onNotificationReceived(MessageEvent messageEvent);
         void onStart();
+        void onResume();
         void onPause();
         void onDestroy();
     }

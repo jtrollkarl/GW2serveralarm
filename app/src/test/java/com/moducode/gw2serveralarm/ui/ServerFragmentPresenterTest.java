@@ -5,8 +5,8 @@ import com.moducode.gw2serveralarm.data.MessageEvent;
 import com.moducode.gw2serveralarm.data.ServerModel;
 import com.moducode.gw2serveralarm.retrofit.ServerService;
 import com.moducode.gw2serveralarm.schedulers.ImmediateSchedulers;
-import com.moducode.gw2serveralarm.schedulers.SchedulerProvider;
 import com.moducode.gw2serveralarm.service.FcmSubscribeService;
+import com.moducode.gw2serveralarm.service.SharedPrefsManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,11 +14,16 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import io.reactivex.Observable;
 
-import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -27,7 +32,7 @@ import static org.mockito.Mockito.when;
  */
 public class ServerFragmentPresenterTest {
 
-    private ServerFragmentPresenter serverPresenter;
+    private ServerFragmentPresenter subject;
 
     @Mock
     private ServerFragmentContract.View view;
@@ -36,27 +41,32 @@ public class ServerFragmentPresenterTest {
     private ServerService serverService;
 
     @Mock
-    FcmSubscribeService subscribeService;
+    private FcmSubscribeService fcmSubscribeService;
+
+    @Mock
+    private SharedPrefsManager sharedPrefsManager;
 
     private ServerModel fullServer;
     private ServerModel nonFullServer;
+    private List<ServerModel> serverModelList;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        serverPresenter = new ServerFragmentPresenter(new ImmediateSchedulers(), serverService, subscribeService);
-        serverPresenter.attachView(view);
+        subject = new ServerFragmentPresenter(new ImmediateSchedulers(), serverService, fcmSubscribeService, sharedPrefsManager);
+        subject.attachView(view);
 
         fullServer = new ServerModel(1, "Test", "Full");
         nonFullServer = new ServerModel(2, "Test", "Medium");
+        serverModelList = Arrays.asList(fullServer, nonFullServer);
     }
 
     @Test
     public void fetchServers_SUCCESS() throws Exception {
         when(serverService.listServers("all")).thenReturn(Observable.just(ArgumentMatchers.<ServerModel>anyList()));
 
-        serverPresenter.fetchServers(true);
+        subject.fetchServers(true);
 
         verify(view).setData(ArgumentMatchers.<ServerModel>anyList());
         verify(view).showMessage(R.string.fetch_servers_success);
@@ -65,13 +75,37 @@ public class ServerFragmentPresenterTest {
 
     @Test
     public void monitorServer() throws Exception {
-        serverPresenter.monitorServer(fullServer);
-        verify(subscribeService).subscribeToTopic("1");
+        subject.monitorServer(fullServer);
+        verify(fcmSubscribeService).subscribeToTopic(String.valueOf(fullServer.getId()));
+        verify(sharedPrefsManager).saveServer(String.valueOf(fullServer.getId()));
     }
 
     @Test
     public void onNotificationReceived() throws Exception{
-        serverPresenter.onNotificationReceived(new MessageEvent("test"));
+        subject.onNotificationReceived(new MessageEvent("test"));
         verify(view).showAlarm();
+        verify(sharedPrefsManager).clearSavedPrefs();
     }
+
+    @Test
+    public void onResume_MONITORING_FALSE() throws Exception{
+        when(sharedPrefsManager.isMonitoringServer()).thenReturn(false);
+        when(serverService.listServers("all")).thenReturn(Observable.just(serverModelList));
+
+        subject.onResume();
+        verify(view).setData(ArgumentMatchers.<ServerModel>anyList());
+        verify(view).showMessage(R.string.fetch_servers_success);
+        verify(view).showContent();
+    }
+
+    @Test
+    public void onResume_MONITORING_TRUE() throws Exception{
+        when(sharedPrefsManager.isMonitoringServer()).thenReturn(true);
+        when(serverService.listServers("all")).thenReturn(Observable.just(serverModelList));
+
+        subject.onResume();
+        // TODO: 2017-11-10 fill in rest of test
+
+    }
+
 }
