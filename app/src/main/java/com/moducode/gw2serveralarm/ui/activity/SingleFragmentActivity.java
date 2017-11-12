@@ -1,14 +1,20 @@
-package com.moducode.gw2serveralarm;
+package com.moducode.gw2serveralarm.ui.activity;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.moducode.gw2serveralarm.ui.ServerFragment;
+import com.moducode.gw2serveralarm.R;
 
-public class MainActivity extends AppCompatActivity {
+/**
+ * Created by Jay on 2017-11-12.
+ */
+
+public abstract class SingleFragmentActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,19 +22,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        
-        if(savedInstanceState == null){
-            setFragment();
-        }
+        setupFragment();
+
     }
 
-    private void setFragment(){
-        ServerFragment fragment = new ServerFragment();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .commit();
+    protected abstract Fragment createFragment();
 
+    private void setupFragment(){
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment f = fm.findFragmentById(R.id.fragment_container);
+
+        if(f == null){
+            f = createFragment();
+            fm.beginTransaction().replace(R.id.fragment_container, f).commit();
+
+        }
     }
 
     @Override
@@ -52,4 +60,5 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }
