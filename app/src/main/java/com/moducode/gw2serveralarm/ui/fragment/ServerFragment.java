@@ -1,4 +1,4 @@
-package com.moducode.gw2serveralarm.ui;
+package com.moducode.gw2serveralarm.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

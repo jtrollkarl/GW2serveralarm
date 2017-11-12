@@ -1,9 +1,8 @@
-package com.moducode.gw2serveralarm.ui;
+package com.moducode.gw2serveralarm.ui.fragment;
 
 import android.support.annotation.StringRes;
 
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
-import com.hannesdorfmann.mosby3.mvp.MvpView;
 import com.hannesdorfmann.mosby3.mvp.lce.MvpLceView;
 import com.moducode.gw2serveralarm.data.MessageEvent;
 import com.moducode.gw2serveralarm.data.ServerModel;

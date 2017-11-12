@@ -1,4 +1,4 @@
-package com.moducode.gw2serveralarm.ui;
+package com.moducode.gw2serveralarm.ui.fragment;
 
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.moducode.gw2serveralarm.R;

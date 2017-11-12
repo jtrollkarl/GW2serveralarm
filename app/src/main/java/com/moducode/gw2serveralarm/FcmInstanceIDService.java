@@ -18,4 +18,5 @@ public class FcmInstanceIDService extends FirebaseInstanceIdService {
         String IID_TOKEN = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, IID_TOKEN);
     }
+
 }

@@ -7,6 +7,8 @@ import com.moducode.gw2serveralarm.retrofit.ServerService;
 import com.moducode.gw2serveralarm.schedulers.ImmediateSchedulers;
 import com.moducode.gw2serveralarm.service.FcmSubscribeService;
 import com.moducode.gw2serveralarm.service.SharedPrefsManager;
+import com.moducode.gw2serveralarm.ui.fragment.ServerFragmentContract;
+import com.moducode.gw2serveralarm.ui.fragment.ServerFragmentPresenter;
 
 import org.junit.Before;
 import org.junit.Test;
