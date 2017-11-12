@@ -101,13 +101,13 @@ public class ServerFragment extends MvpLceFragment<SwipeRefreshLayout, List<Serv
     }
 
     @Override
-    public void showObservingView() {
+    public void showMonitoringView() {
         contentView.setVisibility(View.GONE);
         monitoringView.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void hideObservingView() {
+    public void hideMonitoringView() {
         contentView.setVisibility(View.VISIBLE);
         monitoringView.setVisibility(View.GONE);
     }

@@ -14,14 +14,12 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.Observable;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -77,7 +75,7 @@ public class ServerFragmentPresenterTest {
     public void monitorServer() throws Exception {
         subject.monitorServer(fullServer);
         verify(fcmSubscribeService).subscribeToTopic(String.valueOf(fullServer.getId()));
-        verify(view).showObservingView();
+        verify(view).showMonitoringView();
         verify(sharedPrefsManager).saveServer(String.valueOf(fullServer.getId()));
     }
 
@@ -86,7 +84,7 @@ public class ServerFragmentPresenterTest {
         when(sharedPrefsManager.getSavedServer()).thenReturn("test");
 
         subject.onNotificationReceived(new MessageEvent("test"));
-        verify(view).hideObservingView();
+        verify(view).hideMonitoringView();
         verify(view).showAlarm();
         verify(fcmSubscribeService).unSubscribeFromTopic(anyString());
         verify(sharedPrefsManager).clearSavedPrefs();
@@ -101,7 +99,7 @@ public class ServerFragmentPresenterTest {
         verify(view).setData(ArgumentMatchers.<ServerModel>anyList());
         verify(view).showMessage(R.string.fetch_servers_success);
         verify(view).showContent();
-        verify(view).hideObservingView();
+        verify(view).hideMonitoringView();
     }
 
     @Test
@@ -110,19 +108,19 @@ public class ServerFragmentPresenterTest {
         when(serverService.listServers("all")).thenReturn(Observable.just(serverModelList));
 
         subject.onResume();
-        verify(view).showObservingView();
+        verify(view).showMonitoringView();
     }
 
     @Test
     public void onClickMonitoringView() throws Exception{
         when(serverService.listServers("all")).thenReturn(Observable.just(serverModelList));
         when(sharedPrefsManager.getSavedServer()).thenReturn("test");
-        
+
         subject.onClickMonitoringView();
 
         verify(sharedPrefsManager).clearSavedPrefs();
         verify(fcmSubscribeService).unSubscribeFromTopic("test");
-        verify(view).hideObservingView();
+        verify(view).hideMonitoringView();
     }
 
 }

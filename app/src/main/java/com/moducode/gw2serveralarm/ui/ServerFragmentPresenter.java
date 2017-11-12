@@ -1,7 +1,5 @@
 package com.moducode.gw2serveralarm.ui;
 
-import android.util.Log;
-
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.moducode.gw2serveralarm.R;
 import com.moducode.gw2serveralarm.data.MessageEvent;
@@ -92,7 +90,7 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
         sharedPrefsManager.clearSavedPrefs();
         if(isViewAttached()){
             getView().showAlarm();
-            getView().hideObservingView();
+            getView().hideMonitoringView();
         }
     }
 
@@ -101,7 +99,7 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
         fcmSubscribeService.unSubscribeFromTopic(sharedPrefsManager.getSavedServer());
         sharedPrefsManager.clearSavedPrefs();
         if(isViewAttached()){
-            getView().hideObservingView();
+            getView().hideMonitoringView();
         }
         fetchServers(false);
     }
@@ -109,7 +107,7 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
     @Override
     public void monitorServer(final ServerModel server) {
         if(isViewAttached()){
-            getView().showObservingView();
+            getView().showMonitoringView();
         }
         fcmSubscribeService.subscribeToTopic(String.valueOf(server.getId()));
         sharedPrefsManager.saveServer(String.valueOf(server.getId()));
@@ -119,11 +117,11 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
     public void onResume() {
         if(sharedPrefsManager.isMonitoringServer()){
             if(isViewAttached()){
-                getView().showObservingView();
+                getView().showMonitoringView();
             }
         }else {
             if(isViewAttached()){
-                getView().hideObservingView();
+                getView().hideMonitoringView();
             }
             fetchServers(false);
         }

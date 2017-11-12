@@ -20,8 +20,8 @@ public interface ServerFragmentContract {
         void showAlarm();
         void logD(String logMsg);
         void showMessage(@StringRes int msg);
-        void showObservingView();
-        void hideObservingView();
+        void showMonitoringView();
+        void hideMonitoringView();
     }
 
     interface Actions extends MvpPresenter<ServerFragmentContract.View>{
