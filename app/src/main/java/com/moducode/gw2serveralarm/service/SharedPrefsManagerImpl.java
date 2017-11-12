@@ -30,7 +30,7 @@ public class SharedPrefsManagerImpl implements SharedPrefsManager {
 
     @Override
     public void clearSavedPrefs() {
-        preferences.edit().clear().apply();
+        preferences.edit().remove(SERVER_KEY).apply();
     }
 
     @Override
