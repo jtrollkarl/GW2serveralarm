@@ -93,6 +93,6 @@ public class ServerModel implements Comparable<ServerModel> {
 
     @Override
     public int compareTo(@NonNull ServerModel serverModel) {
-        return this.getPopulationLevel() - serverModel.getPopulationLevel();
+        return serverModel.getPopulationLevel() - this.getPopulationLevel();
     }
 }

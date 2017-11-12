@@ -98,6 +98,8 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
 
     @Override
     public void onClickMonitoringView() {
+        fcmSubscribeService.unSubscribeFromTopic(sharedPrefsManager.getSavedServer());
+        sharedPrefsManager.clearSavedPrefs();
         if(isViewAttached()){
             getView().hideObservingView();
         }

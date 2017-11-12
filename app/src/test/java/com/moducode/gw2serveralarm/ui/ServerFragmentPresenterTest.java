@@ -113,4 +113,16 @@ public class ServerFragmentPresenterTest {
         verify(view).showObservingView();
     }
 
+    @Test
+    public void onClickMonitoringView() throws Exception{
+        when(serverService.listServers("all")).thenReturn(Observable.just(serverModelList));
+        when(sharedPrefsManager.getSavedServer()).thenReturn("test");
+        
+        subject.onClickMonitoringView();
+
+        verify(sharedPrefsManager).clearSavedPrefs();
+        verify(fcmSubscribeService).unSubscribeFromTopic("test");
+        verify(view).hideObservingView();
+    }
+
 }
