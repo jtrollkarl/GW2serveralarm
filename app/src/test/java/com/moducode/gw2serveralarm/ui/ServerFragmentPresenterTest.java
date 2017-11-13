@@ -73,7 +73,7 @@ public class ServerFragmentPresenterTest {
         subject.fetchServers(true);
 
         verify(view).setData(ArgumentMatchers.<ServerModel>anyList());
-        verify(view).showMessage(R.string.fetch_servers_success);
+        verify(view).showMessage(R.string.success_fetch_servers);
         verify(view).showContent();
     }
 
@@ -106,7 +106,7 @@ public class ServerFragmentPresenterTest {
 
         subject.onResume();
         verify(view).setData(ArgumentMatchers.<ServerModel>anyList());
-        verify(view).showMessage(R.string.fetch_servers_success);
+        verify(view).showMessage(R.string.success_fetch_servers);
         verify(view).showContent();
         verify(view).hideMonitoringView();
     }

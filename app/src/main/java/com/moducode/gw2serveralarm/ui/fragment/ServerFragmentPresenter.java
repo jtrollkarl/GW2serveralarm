@@ -64,7 +64,7 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
                     @Override
                     public void onComplete() {
                         if (isViewAttached()) {
-                            getView().showMessage(R.string.fetch_servers_success);
+                            getView().showMessage(R.string.success_fetch_servers);
                             getView().showContent();
                         }
                     }

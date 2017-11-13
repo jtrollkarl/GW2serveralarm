@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">GW2serveralarm</string>
     <string name="action_settings">Settings</string>
-    <string name="error_servers_fetch">Error fetching servers</string>
-    <string name="fetch_servers_success">Fetched servers</string>
-    <string name="msg_server_not_full">This server is not full!</string>
+    <string name="error_fetch_servers">Error fetching servers</string>
+    <string name="success_fetch_servers">Fetched servers</string>
+    <string name="error_server_not_full">This server is not full!</string>
+    <string name="notif_monitor_title">GW2 World Monitor</string>
+    <string name="notif_monitor_summ">You are currently monitoring a server</string>
     <string name="pref_notification_summ">Displays a notification icon while monitoring a server</string>
     <string name="pref_notification">Show monitoring icon</string>
     <string name="pref_notification_key">KEY_SHOW_NOTIFICATION</string>

@@ -18,6 +18,11 @@ public class NotificationServiceImpl implements NotificationService {
     private final NotificationManager manager;
     private final Context appContext;
 
+    // TODO: 2017-11-13 only show timestamp when notification is first created, do not update it
+    // TODO: 2017-11-13 clicking on notification should take the user back to the app
+    // TODO: 2017-11-13 add name of server to notification
+
+
     public NotificationServiceImpl(Context appContext) {
         this.appContext = appContext;
         manager = (NotificationManager) appContext.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -28,8 +33,8 @@ public class NotificationServiceImpl implements NotificationService {
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(appContext, CHANNEL_MONITORING)
                         .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("My notification")
-                        .setContentText("Hello World!")
+                        .setContentTitle(appContext.getString(R.string.notif_monitor_title))
+                        .setContentText(appContext.getString(R.string.notif_monitor_summ))
                         .setOnlyAlertOnce(true)
                         .setOngoing(true);
 
