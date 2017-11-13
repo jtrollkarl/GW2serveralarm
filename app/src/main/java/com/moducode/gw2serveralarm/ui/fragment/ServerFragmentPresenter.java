@@ -7,6 +7,7 @@ import com.moducode.gw2serveralarm.data.ServerModel;
 import com.moducode.gw2serveralarm.retrofit.ServerService;
 import com.moducode.gw2serveralarm.schedulers.SchedulerProvider;
 import com.moducode.gw2serveralarm.service.FcmSubscribeService;
+import com.moducode.gw2serveralarm.service.NotificationService;
 import com.moducode.gw2serveralarm.service.SharedPrefsManager;
 
 import org.greenrobot.eventbus.EventBus;
@@ -34,16 +35,19 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
     private final FcmSubscribeService fcmSubscribeService;
     private final SharedPrefsManager sharedPrefsManager;
     private final CompositeDisposable compositeDisposable;
+    private final NotificationService notificationService;
 
 
     public ServerFragmentPresenter(SchedulerProvider schedulers,
                                    ServerService serverService,
                                    FcmSubscribeService fcmSubscribeService,
-                                   SharedPrefsManager sharedPrefsManager) {
+                                   SharedPrefsManager sharedPrefsManager,
+                                   NotificationService notificationService) {
         this.schedulers = schedulers;
         this.serverService = serverService;
         this.fcmSubscribeService = fcmSubscribeService;
         this.sharedPrefsManager = sharedPrefsManager;
+        this.notificationService = notificationService;
         this.compositeDisposable = new CompositeDisposable();
     }
 
@@ -53,7 +57,7 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
             getView().showLoading(pullToRefresh);
         }
 
-        compositeDisposable.add(serverService.listServers("all")
+        compositeDisposable.add(serverService.listServers()
                 .subscribeOn(schedulers.io())
                 .observeOn(schedulers.ui())
                 .subscribeWith(new DisposableObserver<List<ServerModel>>() {
@@ -88,6 +92,7 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
         getView().logD(messageEvent.getMessage());
         fcmSubscribeService.unSubscribeFromTopic(sharedPrefsManager.getSavedServer());
         sharedPrefsManager.clearSavedPrefs();
+        notificationService.removeMonitoringNotification();
         if(isViewAttached()){
             getView().showAlarm();
             getView().hideMonitoringView();
@@ -98,6 +103,9 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
     public void onClickMonitoringView() {
         fcmSubscribeService.unSubscribeFromTopic(sharedPrefsManager.getSavedServer());
         sharedPrefsManager.clearSavedPrefs();
+
+        notificationService.removeMonitoringNotification();
+
         if(isViewAttached()){
             getView().hideMonitoringView();
         }
@@ -111,11 +119,13 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
         }
         fcmSubscribeService.subscribeToTopic(String.valueOf(server.getId()));
         sharedPrefsManager.saveServer(String.valueOf(server.getId()));
+        showMonitoringNotification();
     }
 
     @Override
     public void onResume() {
         if(sharedPrefsManager.isMonitoringServer()){
+            showMonitoringNotification();
             if(isViewAttached()){
                 getView().showMonitoringView();
             }
@@ -142,6 +152,14 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
     @Override
     public void onDestroy() {
         EventBus.getDefault().unregister(this);
+    }
+
+    private void showMonitoringNotification(){
+        if(sharedPrefsManager.isNotificationEnabled()){
+            notificationService.showMonitoringNotification();
+        }else {
+            notificationService.removeMonitoringNotification();
+        }
     }
 
 }

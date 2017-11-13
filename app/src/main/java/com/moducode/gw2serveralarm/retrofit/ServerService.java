@@ -15,8 +15,8 @@ import retrofit2.http.Query;
 
 public interface ServerService {
 
-    @GET("worlds")
-    Observable<List<ServerModel>> listServers(@Query("ids") String id);
+    @GET("worlds?ids=all")
+    Observable<List<ServerModel>> listServers();
 
     @GET("worlds")
     Observable<ServerModel> getServer(@Query("id") String id);

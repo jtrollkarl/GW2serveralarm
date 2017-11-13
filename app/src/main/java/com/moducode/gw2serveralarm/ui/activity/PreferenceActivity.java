@@ -33,7 +33,6 @@ public class PreferenceActivity extends AppCompatActivity{
         }
     }
 
-
     public static Intent newInstance(Context currentActivity){
         return new Intent(currentActivity, PreferenceActivity.class);
     }

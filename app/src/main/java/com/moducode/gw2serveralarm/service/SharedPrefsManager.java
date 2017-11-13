@@ -8,6 +8,8 @@ public interface SharedPrefsManager {
 
     boolean isMonitoringServer();
 
+    boolean isNotificationEnabled();
+
     void saveServer(String id);
 
     void clearSavedPrefs();

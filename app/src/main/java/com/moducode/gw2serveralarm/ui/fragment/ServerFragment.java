@@ -22,6 +22,7 @@ import com.moducode.gw2serveralarm.retrofit.RetrofitFactory;
 import com.moducode.gw2serveralarm.retrofit.ServerService;
 import com.moducode.gw2serveralarm.schedulers.BaseSchedulerProvider;
 import com.moducode.gw2serveralarm.service.FcmSubscribeServiceImpl;
+import com.moducode.gw2serveralarm.service.NotificationServiceImpl;
 import com.moducode.gw2serveralarm.service.SharedPrefsManagerImpl;
 import com.moducode.gw2serveralarm.ui.adapter.ServerListAdapter;
 
@@ -79,7 +80,8 @@ public class ServerFragment extends MvpLceFragment<SwipeRefreshLayout, List<Serv
                 new BaseSchedulerProvider(),
                 RetrofitFactory.create(ServerService.class),
                 new FcmSubscribeServiceImpl(),
-                new SharedPrefsManagerImpl(getActivity().getApplicationContext())
+                new SharedPrefsManagerImpl(getActivity().getApplicationContext()),
+                new NotificationServiceImpl(getActivity().getApplicationContext())
         );
     }
 
