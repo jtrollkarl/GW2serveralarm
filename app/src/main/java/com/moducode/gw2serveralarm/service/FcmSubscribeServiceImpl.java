@@ -8,6 +8,14 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 public class FcmSubscribeServiceImpl implements FcmSubscribeService {
 
+    private final NotificationService notificationService;
+    private final SharedPrefsManager sharedPrefsManager;
+
+    public FcmSubscribeServiceImpl(SharedPrefsManager sharedPrefsManager, NotificationService notificationService) {
+        this.sharedPrefsManager = sharedPrefsManager;
+        this.notificationService = notificationService;
+    }
+
     @Override
     public void subscribeToTopic(String topicId) {
         FirebaseMessaging.getInstance().subscribeToTopic(topicId);

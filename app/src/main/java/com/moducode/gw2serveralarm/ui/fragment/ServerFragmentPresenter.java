@@ -2,6 +2,8 @@ package com.moducode.gw2serveralarm.ui.fragment;
 
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.moducode.gw2serveralarm.R;
+import com.moducode.gw2serveralarm.dagger.DaggerServerFragmentPresenterComponent;
+import com.moducode.gw2serveralarm.dagger.ServerFragmentPresenterComponent;
 import com.moducode.gw2serveralarm.data.MessageEvent;
 import com.moducode.gw2serveralarm.data.ServerModel;
 import com.moducode.gw2serveralarm.retrofit.ServerService;
@@ -17,6 +19,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
@@ -30,24 +34,18 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
 
     private static final String TAG = ServerFragmentPresenter.class.getSimpleName();
 
+    @Inject FcmSubscribeService fcmSubscribeService;
+
     private final SchedulerProvider schedulers;
     private final ServerService serverService;
-    private final FcmSubscribeService fcmSubscribeService;
-    private final SharedPrefsManager sharedPrefsManager;
+
     private final CompositeDisposable compositeDisposable;
-    private final NotificationService notificationService;
 
 
-    public ServerFragmentPresenter(SchedulerProvider schedulers,
-                                   ServerService serverService,
-                                   FcmSubscribeService fcmSubscribeService,
-                                   SharedPrefsManager sharedPrefsManager,
-                                   NotificationService notificationService) {
+    @Inject ServerFragmentPresenter(FcmSubscribeService fcmSubscribeService, SchedulerProvider schedulers, ServerService serverService) {
+        this.fcmSubscribeService = fcmSubscribeService;
         this.schedulers = schedulers;
         this.serverService = serverService;
-        this.fcmSubscribeService = fcmSubscribeService;
-        this.sharedPrefsManager = sharedPrefsManager;
-        this.notificationService = notificationService;
         this.compositeDisposable = new CompositeDisposable();
     }
 

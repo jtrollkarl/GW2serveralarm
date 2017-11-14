@@ -79,10 +79,7 @@ public class ServerFragment extends MvpLceFragment<SwipeRefreshLayout, List<Serv
         return new ServerFragmentPresenter(
                 new BaseSchedulerProvider(),
                 RetrofitFactory.create(ServerService.class),
-                new FcmSubscribeServiceImpl(),
-                new SharedPrefsManagerImpl(getActivity().getApplicationContext()),
-                new NotificationServiceImpl(getActivity().getApplicationContext())
-        );
+                new FcmSubscribeServiceImpl());
     }
 
     @Override
