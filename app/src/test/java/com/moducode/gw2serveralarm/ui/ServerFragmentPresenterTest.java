@@ -5,6 +5,7 @@ import com.moducode.gw2serveralarm.data.MessageEvent;
 import com.moducode.gw2serveralarm.data.ServerModel;
 import com.moducode.gw2serveralarm.retrofit.ServerService;
 import com.moducode.gw2serveralarm.schedulers.ImmediateSchedulers;
+import com.moducode.gw2serveralarm.schedulers.SchedulerProvider;
 import com.moducode.gw2serveralarm.service.FcmSubscribeService;
 import com.moducode.gw2serveralarm.service.NotificationService;
 import com.moducode.gw2serveralarm.service.SharedPrefsManager;
@@ -14,6 +15,7 @@ import com.moducode.gw2serveralarm.ui.fragment.ServerFragmentPresenter;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -33,22 +35,17 @@ import static org.mockito.Mockito.when;
  */
 public class ServerFragmentPresenterTest {
 
-    private ServerFragmentPresenter subject;
-
-    @Mock
-    private ServerFragmentContract.View view;
-
-    @Mock
-    private ServerService serverService;
-
     @Mock
     private FcmSubscribeService fcmSubscribeService;
 
     @Mock
-    private SharedPrefsManager sharedPrefsManager;
+    private ServerService serverService;
+
+
+    private ServerFragmentPresenter subject;
 
     @Mock
-    private NotificationService notificationService;
+    private ServerFragmentContract.View view;
 
     private ServerModel fullServer;
     private ServerModel nonFullServer;
@@ -58,7 +55,7 @@ public class ServerFragmentPresenterTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        subject = new ServerFragmentPresenter(new ImmediateSchedulers(), serverService, fcmSubscribeService, sharedPrefsManager, notificationService);
+        subject = new ServerFragmentPresenter(fcmSubscribeService, new ImmediateSchedulers(), serverService);
         subject.attachView(view);
 
         fullServer = new ServerModel(1, "Test", "Full");
@@ -68,7 +65,7 @@ public class ServerFragmentPresenterTest {
 
     @Test
     public void fetchServers_SUCCESS() throws Exception {
-        when(serverService.listServers()).thenReturn(Observable.just(ArgumentMatchers.<ServerModel>anyList()));
+        when(serverService.listServers()).thenReturn(Observable.just(serverModelList));
 
         subject.fetchServers(true);
 
@@ -78,71 +75,58 @@ public class ServerFragmentPresenterTest {
     }
 
     @Test
-    public void monitorServer() throws Exception {
-        when(sharedPrefsManager.isNotificationEnabled()).thenReturn(true);
+    public void fetchServers_ERROR() throws Exception{
+        Throwable e = new Throwable("Error");
 
-        subject.monitorServer(fullServer);
-        verify(fcmSubscribeService).subscribeToTopic(String.valueOf(fullServer.getId()));
-        verify(view).showMonitoringView();
-        verify(sharedPrefsManager).saveServer(String.valueOf(fullServer.getId()));
-        verify(notificationService).showMonitoringNotification();
+        when(serverService.listServers()).thenReturn(Observable.<List<ServerModel>>error(e));
+
+        subject.fetchServers(true);
+
+        verify(view).showError(e, true);
     }
 
     @Test
-    public void onNotificationReceived() throws Exception{
-        when(sharedPrefsManager.getSavedServer()).thenReturn("test");
+    public void monitorServer() throws Exception{
+        subject.monitorServer(fullServer);
 
-        subject.onNotificationReceived(new MessageEvent("test"));
-        verify(view).hideMonitoringView();
-        verify(view).showAlarm();
-        verify(fcmSubscribeService).unSubscribeFromTopic(anyString());
-        verify(sharedPrefsManager).clearSavedPrefs();
+        verify(fcmSubscribeService).subscribeToTopic(String.valueOf(fullServer.getId()));
+    }
+
+    @Test
+    public void onResume_MONITORING_TRUE() throws Exception {
+        when(fcmSubscribeService.isSubscribed()).thenReturn(true);
+
+        subject.onResume();
+
+        verify(view).showMonitoringView();
     }
 
     @Test
     public void onResume_MONITORING_FALSE() throws Exception{
-        when(sharedPrefsManager.isMonitoringServer()).thenReturn(false);
         when(serverService.listServers()).thenReturn(Observable.just(serverModelList));
 
+        when(fcmSubscribeService.isSubscribed()).thenReturn(false);
+
         subject.onResume();
-        verify(view).setData(ArgumentMatchers.<ServerModel>anyList());
-        verify(view).showMessage(R.string.success_fetch_servers);
-        verify(view).showContent();
+
         verify(view).hideMonitoringView();
     }
 
     @Test
-    public void onResume_MONITORING_TRUE() throws Exception{
+    public void onReceiveNotification() throws Exception{
+        subject.onNotificationReceived(new MessageEvent("Test"));
 
-        when(sharedPrefsManager.isNotificationEnabled()).thenReturn(true);
-
-        subject.onResume();
-        verify(notificationService).showMonitoringNotification();
-        verify(view).showMonitoringView();
-    }
-
-    @Test
-    public void onResume_NOTIFICATION_FALSE() throws Exception{
-        when(sharedPrefsManager.isNotificationEnabled()).thenReturn(false);
-        when(sharedPrefsManager.isMonitoringServer()).thenReturn(true);
-        when(serverService.listServers()).thenReturn(Observable.just(serverModelList));
-
-        subject.onResume();
-
-        verify(notificationService).removeMonitoringNotification();
+        verify(view).showAlarm();
+        verify(view).hideMonitoringView();
     }
 
     @Test
     public void onClickMonitoringView() throws Exception{
-        when(serverService.listServers()).thenReturn(Observable.just(serverModelList));
-        when(sharedPrefsManager.getSavedServer()).thenReturn("test");
+        when(serverService.listServers()).thenReturn(Observable.<List<ServerModel>>empty());
 
         subject.onClickMonitoringView();
 
-        verify(sharedPrefsManager).clearSavedPrefs();
-        verify(fcmSubscribeService).unSubscribeFromTopic("test");
-        verify(notificationService).removeMonitoringNotification();
+        verify(fcmSubscribeService).unSubscribeFromTopic();
         verify(view).hideMonitoringView();
     }
-
 }

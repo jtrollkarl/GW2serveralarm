@@ -19,7 +19,7 @@ public class ContextModule {
     }
 
     @Provides
-    @ServerFragmentPresenterComponentScope
+    @PresenterComponentScope
     public Context context(){
         return appContext;
     }

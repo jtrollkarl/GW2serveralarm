@@ -15,6 +15,8 @@ import dagger.Provides;
 @Module(includes = {NotificationServiceModule.class, SharedPrefsModule.class})
 public class FcmSubscribeServiceModule {
 
+    // TODO: 2017-11-15 this can be cleaned to include notificationservice and sharedprefs?
+
     @Provides
     public FcmSubscribeService fcmSubscribeService(SharedPrefsManager sharedPrefsManager, NotificationService notificationService){
         return new FcmSubscribeServiceImpl(sharedPrefsManager, notificationService);

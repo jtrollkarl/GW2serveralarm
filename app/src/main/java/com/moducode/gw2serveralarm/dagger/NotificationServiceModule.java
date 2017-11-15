@@ -16,7 +16,7 @@ import dagger.Provides;
 public class NotificationServiceModule {
 
     @Provides
-    @ServerFragmentPresenterComponentScope
+    @PresenterComponentScope
     public NotificationService notificationService(Context context){
         return new NotificationServiceImpl(context);
     }

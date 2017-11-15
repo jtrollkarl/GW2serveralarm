@@ -15,7 +15,7 @@ import dagger.Provides;
 public class SharedPrefsModule {
 
     @Provides
-    @ServerFragmentPresenterComponentScope
+    @PresenterComponentScope
     public SharedPrefsManager sharedPrefsManager(Context context){
         return new SharedPrefsManagerImpl(context);
     }

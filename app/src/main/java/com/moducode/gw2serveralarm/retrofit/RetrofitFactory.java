@@ -1,5 +1,7 @@
 package com.moducode.gw2serveralarm.retrofit;
 
+import android.util.Log;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -12,7 +14,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitFactory {
 
+    private static final String TAG = RetrofitFactory.class.getSimpleName();
+
+    private static final String BASE_URL = "https://api.guildwars2.com/v2/";
+
     public static <T> T create(Class<T> clazz){
+        Log.d(TAG, "Retrofit service created");
+
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
@@ -20,7 +28,7 @@ public class RetrofitFactory {
         httpClient.addInterceptor(interceptor);
 
         final Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.guildwars2.com/v2/")
+                .baseUrl(BASE_URL)
                 .client(httpClient.build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

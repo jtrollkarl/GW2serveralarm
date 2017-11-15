@@ -39,7 +39,7 @@ public class SharedPrefsManagerImpl implements SharedPrefsManager {
     }
 
     @Override
-    public void clearSavedPrefs() {
+    public void clearSavedTopic() {
         preferences.edit().remove(SERVER_KEY).apply();
     }
 

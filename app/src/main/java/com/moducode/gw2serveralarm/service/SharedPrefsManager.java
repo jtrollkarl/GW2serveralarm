@@ -12,7 +12,7 @@ public interface SharedPrefsManager {
 
     void saveServer(String id);
 
-    void clearSavedPrefs();
+    void clearSavedTopic();
 
     String getSavedServer();
 

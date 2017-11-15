@@ -19,11 +19,22 @@ public class FcmSubscribeServiceImpl implements FcmSubscribeService {
     @Override
     public void subscribeToTopic(String topicId) {
         FirebaseMessaging.getInstance().subscribeToTopic(topicId);
+        sharedPrefsManager.saveServer(topicId);
+        if(sharedPrefsManager.isNotificationEnabled()){
+            notificationService.showMonitoringNotification();
+        }
     }
 
     @Override
-    public void unSubscribeFromTopic(String topicId) {
-        FirebaseMessaging.getInstance().unsubscribeFromTopic(topicId);
+    public void unSubscribeFromTopic() {
+        String topic = sharedPrefsManager.getSavedServer();
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(topic);
+        sharedPrefsManager.clearSavedTopic();
+        notificationService.removeMonitoringNotification();
     }
 
+    @Override
+    public boolean isSubscribed() {
+        return sharedPrefsManager.isMonitoringServer();
+    }
 }

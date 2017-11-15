@@ -1,5 +1,6 @@
 package com.moducode.gw2serveralarm.ui.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -17,13 +18,13 @@ import android.widget.Toast;
 
 import com.hannesdorfmann.mosby3.mvp.lce.MvpLceFragment;
 import com.moducode.gw2serveralarm.R;
+import com.moducode.gw2serveralarm.dagger.ContextModule;
+import com.moducode.gw2serveralarm.dagger.DaggerPresenterComponent;
+import com.moducode.gw2serveralarm.dagger.PresenterComponent;
 import com.moducode.gw2serveralarm.data.ServerModel;
 import com.moducode.gw2serveralarm.retrofit.RetrofitFactory;
 import com.moducode.gw2serveralarm.retrofit.ServerService;
 import com.moducode.gw2serveralarm.schedulers.BaseSchedulerProvider;
-import com.moducode.gw2serveralarm.service.FcmSubscribeServiceImpl;
-import com.moducode.gw2serveralarm.service.NotificationServiceImpl;
-import com.moducode.gw2serveralarm.service.SharedPrefsManagerImpl;
 import com.moducode.gw2serveralarm.ui.adapter.ServerListAdapter;
 
 import java.util.List;
@@ -74,12 +75,18 @@ public class ServerFragment extends MvpLceFragment<SwipeRefreshLayout, List<Serv
         serverRecycler.setAdapter(adapter);
     }
 
+
     @Override
     public ServerFragmentContract.Actions createPresenter() {
-        return new ServerFragmentPresenter(
-                new BaseSchedulerProvider(),
-                RetrofitFactory.create(ServerService.class),
-                new FcmSubscribeServiceImpl());
+        Context appContext = getActivity().getApplicationContext();
+
+        PresenterComponent component = DaggerPresenterComponent.builder()
+                .contextModule(new ContextModule(appContext))
+                .build();
+
+        return new ServerFragmentPresenter(component.getFcmSubscribeService(),
+                component.getSchedulerProvider(),
+                component.getServerService());
     }
 
     @Override
