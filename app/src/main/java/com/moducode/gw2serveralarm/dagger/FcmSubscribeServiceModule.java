@@ -2,6 +2,8 @@ package com.moducode.gw2serveralarm.dagger;
 
 import android.content.Context;
 
+import com.moducode.gw2serveralarm.service.FcmMessagingDelegate;
+import com.moducode.gw2serveralarm.service.FcmMessagingDelegateImpl;
 import com.moducode.gw2serveralarm.service.FcmSubscribeService;
 import com.moducode.gw2serveralarm.service.FcmSubscribeServiceImpl;
 import com.moducode.gw2serveralarm.service.NotificationService;
@@ -19,14 +21,11 @@ import dagger.Provides;
 @Module(includes = {ContextModule.class})
 public class FcmSubscribeServiceModule {
 
-    // TODO: 2017-11-15 this can be cleaned to include notificationservice and sharedprefs?
-
     @Provides
     @PresenterComponentScope
-    public FcmSubscribeService fcmSubscribeService(SharedPrefsManager sharedPrefsManager, NotificationService notificationService){
-        return new FcmSubscribeServiceImpl(sharedPrefsManager, notificationService);
+    public FcmSubscribeService fcmSubscribeService(FcmMessagingDelegate fcmMessagingDelegate, SharedPrefsManager sharedPrefsManager, NotificationService notificationService){
+        return new FcmSubscribeServiceImpl(fcmMessagingDelegate, sharedPrefsManager, notificationService);
     }
-
 
     @Provides
     @PresenterComponentScope
@@ -38,6 +37,12 @@ public class FcmSubscribeServiceModule {
     @PresenterComponentScope
     public NotificationService notificationService(Context appContext){
         return new NotificationServiceImpl(appContext);
+    }
+
+    @Provides
+    @PresenterComponentScope
+    public FcmMessagingDelegate fcmMessagingDelegate(){
+        return new FcmMessagingDelegateImpl();
     }
 
 }

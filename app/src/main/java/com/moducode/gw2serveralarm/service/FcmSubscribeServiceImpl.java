@@ -10,18 +10,20 @@ import javax.inject.Inject;
 
 public class FcmSubscribeServiceImpl implements FcmSubscribeService {
 
+    private final FcmMessagingDelegate fcmMessagingDelegate;
     private final NotificationService notificationService;
     private final SharedPrefsManager sharedPrefsManager;
 
     @Inject
-    public FcmSubscribeServiceImpl(SharedPrefsManager sharedPrefsManager, NotificationService notificationService) {
+    public FcmSubscribeServiceImpl(FcmMessagingDelegate fcmMessagingDelegate, SharedPrefsManager sharedPrefsManager, NotificationService notificationService) {
+        this.fcmMessagingDelegate = fcmMessagingDelegate;
         this.sharedPrefsManager = sharedPrefsManager;
         this.notificationService = notificationService;
     }
 
     @Override
     public void subscribeToTopic(String topicId) {
-        FirebaseMessaging.getInstance().subscribeToTopic(topicId);
+        fcmMessagingDelegate.subscribeToTopic(topicId);
         sharedPrefsManager.saveServer(topicId);
         if(sharedPrefsManager.isNotificationEnabled()){
             notificationService.showMonitoringNotification();
@@ -31,7 +33,7 @@ public class FcmSubscribeServiceImpl implements FcmSubscribeService {
     @Override
     public void unSubscribeFromTopic() {
         String topic = sharedPrefsManager.getSavedServer();
-        FirebaseMessaging.getInstance().unsubscribeFromTopic(topic);
+        fcmMessagingDelegate.unsubscribeFromTopic(topic);
         sharedPrefsManager.clearSavedTopic();
         notificationService.removeMonitoringNotification();
     }
