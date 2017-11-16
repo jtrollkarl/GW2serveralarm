@@ -97,6 +97,7 @@ public class ServerFragmentPresenterTest {
 
         subject.onResume();
 
+        verify(fcmSubscribeService).showNotification();
         verify(view).showMonitoringView();
     }
 
@@ -108,6 +109,7 @@ public class ServerFragmentPresenterTest {
 
         subject.onResume();
 
+        verify(fcmSubscribeService).removeNotification();
         verify(view).hideMonitoringView();
     }
 

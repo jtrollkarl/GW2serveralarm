@@ -1,6 +1,5 @@
 package com.moducode.gw2serveralarm.service;
 
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import javax.inject.Inject;
 
@@ -36,6 +35,16 @@ public class FcmSubscribeServiceImpl implements FcmSubscribeService {
         fcmMessagingDelegate.unsubscribeFromTopic(topic);
         sharedPrefsManager.clearSavedTopic();
         notificationService.removeMonitoringNotification();
+    }
+
+    @Override
+    public void removeNotification() {
+        notificationService.removeMonitoringNotification();
+    }
+
+    @Override
+    public void showNotification(){
+        notificationService.showMonitoringNotification();
     }
 
     @Override

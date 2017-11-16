@@ -1,5 +1,6 @@
 package com.moducode.gw2serveralarm.service;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.support.v4.app.NotificationCompat;
@@ -19,8 +20,8 @@ public class NotificationServiceImpl implements NotificationService {
 
     private final NotificationManager manager;
     private final Context appContext;
+    private Notification notification;
 
-    // TODO: 2017-11-13 only show timestamp when notification is first created, do not update it
     // TODO: 2017-11-13 clicking on notification should take the user back to the app
     // TODO: 2017-11-13 add name of server to notification
 
@@ -32,21 +33,30 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void showMonitoringNotification() {
+        if(isNotificationShowing()) return;
+
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(appContext, CHANNEL_MONITORING)
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentTitle(appContext.getString(R.string.notif_monitor_title))
                         .setContentText(appContext.getString(R.string.notif_monitor_summ))
+                        .setChannelId(CHANNEL_MONITORING)
                         .setOnlyAlertOnce(true)
+                        .setShowWhen(false)
                         .setOngoing(true);
 
 
-        manager.notify(ID_MONITORING, builder.build());
+        notification = builder.build();
+        manager.notify(ID_MONITORING, notification);
     }
 
     @Override
     public void removeMonitoringNotification() {
         manager.cancel(ID_MONITORING);
+        notification = null;
     }
 
+    private boolean isNotificationShowing(){
+        return notification != null;
+    }
 }

@@ -12,6 +12,10 @@ public interface FcmSubscribeService {
 
     void unSubscribeFromTopic();
 
+    void showNotification();
+
+    void removeNotification();
+
     boolean isSubscribed();
 
 }

@@ -110,13 +110,11 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
     @Override
     public void onResume() {
         if(fcmSubscribeService.isSubscribed()){
-            if(isViewAttached()){
-                getView().showMonitoringView();
-            }
+            fcmSubscribeService.showNotification();
+            if(isViewAttached()) getView().showMonitoringView();
         }else {
-            if(isViewAttached()){
-                getView().hideMonitoringView();
-            }
+            fcmSubscribeService.removeNotification();
+            if(isViewAttached()) getView().hideMonitoringView();
             fetchServers(false);
         }
     }
@@ -136,6 +134,7 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
     @Override
     public void onDestroy() {
         EventBus.getDefault().unregister(this);
+        fcmSubscribeService.removeNotification();
     }
 
 
