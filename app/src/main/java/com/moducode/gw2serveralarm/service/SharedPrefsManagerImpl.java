@@ -6,6 +6,8 @@ import android.preference.PreferenceManager;
 
 import com.moducode.gw2serveralarm.R;
 
+import javax.inject.Inject;
+
 /**
  * Created by Jay on 2017-11-09.
  */
@@ -18,6 +20,7 @@ public class SharedPrefsManagerImpl implements SharedPrefsManager {
 
     private final String KEY_PREF_NOTIFICATION;
 
+    @Inject
     public SharedPrefsManagerImpl(Context context) {
         this.KEY_PREF_NOTIFICATION = context.getString(R.string.pref_notification_key);
         this.preferences = PreferenceManager.getDefaultSharedPreferences(context);

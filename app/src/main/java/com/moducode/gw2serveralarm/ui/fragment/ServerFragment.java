@@ -22,9 +22,6 @@ import com.moducode.gw2serveralarm.dagger.ContextModule;
 import com.moducode.gw2serveralarm.dagger.DaggerPresenterComponent;
 import com.moducode.gw2serveralarm.dagger.PresenterComponent;
 import com.moducode.gw2serveralarm.data.ServerModel;
-import com.moducode.gw2serveralarm.retrofit.RetrofitFactory;
-import com.moducode.gw2serveralarm.retrofit.ServerService;
-import com.moducode.gw2serveralarm.schedulers.BaseSchedulerProvider;
 import com.moducode.gw2serveralarm.ui.adapter.ServerListAdapter;
 
 import java.util.List;

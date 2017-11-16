@@ -30,13 +30,11 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
 
     private static final String TAG = ServerFragmentPresenter.class.getSimpleName();
 
-    @Inject FcmSubscribeService fcmSubscribeService;
-
+    private final FcmSubscribeService fcmSubscribeService;
     private final SchedulerProvider schedulers;
     private final ServerService serverService;
 
     private final CompositeDisposable compositeDisposable;
-
 
     @Inject
     public ServerFragmentPresenter(FcmSubscribeService fcmSubscribeService, SchedulerProvider schedulers, ServerService serverService) {

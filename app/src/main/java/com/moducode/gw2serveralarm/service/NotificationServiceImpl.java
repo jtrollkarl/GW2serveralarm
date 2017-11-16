@@ -6,6 +6,8 @@ import android.support.v4.app.NotificationCompat;
 
 import com.moducode.gw2serveralarm.R;
 
+import javax.inject.Inject;
+
 /**
  * Created by Jay on 2017-11-13.
  */
@@ -22,7 +24,7 @@ public class NotificationServiceImpl implements NotificationService {
     // TODO: 2017-11-13 clicking on notification should take the user back to the app
     // TODO: 2017-11-13 add name of server to notification
 
-
+    @Inject
     public NotificationServiceImpl(Context appContext) {
         this.appContext = appContext;
         manager = (NotificationManager) appContext.getSystemService(Context.NOTIFICATION_SERVICE);

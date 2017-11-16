@@ -2,6 +2,8 @@ package com.moducode.gw2serveralarm.service;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import javax.inject.Inject;
+
 /**
  * Created by Jay on 2017-11-07.
  */
@@ -11,6 +13,7 @@ public class FcmSubscribeServiceImpl implements FcmSubscribeService {
     private final NotificationService notificationService;
     private final SharedPrefsManager sharedPrefsManager;
 
+    @Inject
     public FcmSubscribeServiceImpl(SharedPrefsManager sharedPrefsManager, NotificationService notificationService) {
         this.sharedPrefsManager = sharedPrefsManager;
         this.notificationService = notificationService;
