@@ -104,7 +104,7 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
         if(isViewAttached()){
             getView().showMonitoringView();
         }
-        fcmSubscribeService.subscribeToTopic(String.valueOf(server.getId()));
+        fcmSubscribeService.subscribeToTopic(server.getIdString());
     }
 
     @Override

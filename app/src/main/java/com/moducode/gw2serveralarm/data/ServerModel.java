@@ -91,6 +91,10 @@ public class ServerModel implements Comparable<ServerModel> {
         }
     }
 
+    public String getIdString(){
+        return String.valueOf(this.id);
+    }
+
     @Override
     public int compareTo(@NonNull ServerModel serverModel) {
         return serverModel.getPopulationLevel() - this.getPopulationLevel();

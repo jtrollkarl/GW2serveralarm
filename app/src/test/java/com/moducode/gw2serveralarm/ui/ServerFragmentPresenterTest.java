@@ -41,7 +41,6 @@ public class ServerFragmentPresenterTest {
     @Mock
     private ServerService serverService;
 
-
     private ServerFragmentPresenter subject;
 
     @Mock
@@ -89,7 +88,7 @@ public class ServerFragmentPresenterTest {
     public void monitorServer() throws Exception{
         subject.monitorServer(fullServer);
 
-        verify(fcmSubscribeService).subscribeToTopic(String.valueOf(fullServer.getId()));
+        verify(fcmSubscribeService).subscribeToTopic(fullServer.getIdString());
     }
 
     @Test
