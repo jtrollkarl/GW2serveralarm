@@ -72,4 +72,15 @@ public class FcmSubscribeServiceImplTest {
         assertEquals(subject.isSubscribed(), anyBoolean());
     }
 
+    @Test
+    public void removeNotification() throws Exception{
+        subject.removeNotification();
+        verify(notificationService).removeMonitoringNotification();
+    }
+
+    @Test
+    public void showNotification() throws Exception{
+        subject.removeNotification();
+        verify(notificationService).removeMonitoringNotification();
+    }
 }
