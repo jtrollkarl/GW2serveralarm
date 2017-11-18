@@ -173,8 +173,9 @@ public class ServerFragment extends MvpLceFragment<SwipeRefreshLayout, List<Serv
 
     @Override
     public void onDestroy() {
-        presenter.onDestroy();
         super.onDestroy();
+        presenter.onDestroy();
+        Log.d(TAG, "onDestroy");
     }
 
     @OnClick({R.id.monitoringView})

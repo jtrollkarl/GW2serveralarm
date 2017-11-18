@@ -8,6 +8,7 @@ import org.mockito.MockitoAnnotations;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -79,8 +80,20 @@ public class FcmSubscribeServiceImplTest {
     }
 
     @Test
-    public void showNotification() throws Exception{
-        subject.removeNotification();
-        verify(notificationService).removeMonitoringNotification();
+    public void showNotification_TRUE() throws Exception{
+        when(sharedPrefsManager.isMonitoringServer()).thenReturn(true);
+        when(sharedPrefsManager.isNotificationEnabled()).thenReturn(true);
+
+        subject.showNotification();
+        verify(notificationService).showMonitoringNotification();
+    }
+
+    @Test
+    public void showNotification_FALSE() throws Exception{
+        when(sharedPrefsManager.isNotificationEnabled()).thenReturn(false);
+        when(sharedPrefsManager.isMonitoringServer()).thenReturn(true);
+
+        subject.showNotification();
+        verify(notificationService, never());
     }
 }

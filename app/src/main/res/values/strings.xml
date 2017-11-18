@@ -1,12 +1,37 @@
 <resources>
     <string name="app_name">GW2serveralarm</string>
     <string name="action_settings">Settings</string>
+
+    <!--Error/success messages-->
     <string name="error_fetch_servers" translatable="true">Error fetching servers</string>
     <string name="success_fetch_servers" translatable="true">Fetched servers</string>
     <string name="error_server_not_full" translatable="true">This server is not full!</string>
-    <string name="notif_monitor_title">GW2 World Monitor</string>
+
+    <!--Notifications-->
+    <string name="notif_monitor_title" translatable="false">GW2 World Monitor</string>
     <string name="notif_monitor_summ" translatable="true">You are currently monitoring a server</string>
+
+    <!--Preferences-->
     <string name="pref_notification_summ" translatable="true">Displays a notification icon while monitoring a server</string>
     <string name="pref_notification" translatable="true">Show monitoring icon</string>
+
+    <!--Preference Keys-->
     <string name="pref_notification_key" translatable="false">KEY_SHOW_NOTIFICATION</string>
+    <string name="pref_alarm_vibrate_key" translatable="false">KEY_ALARM_VIBRATE</string>
+    <string name="pref_alarm_light" translatable="false">KEY_ALARM_LIGHT</string>
+    <string name="pref_alarm_sound_key">KEY_ALARM_SOUND</string>
+
+    <string name="pref_category_notifications" translatable="true">Notifications</string>
+    <string name="pref_category_alarm" translatable="true">Alarm</string>
+    <string name="pref_category_test" translatable="true">Test</string>
+    <string name="pref_alarm_vibrate">Vibrate</string>
+    <string name="pref_alarm_vibrate_summary">Set whether or not the device will vibrate when the alarm is triggered</string>
+    <string name="pref_light">Notification light</string>
+
+    <string name="pref_alarm_light_summary">Set whether or not the LED will flash upon an alarm being triggered</string>
+    <string name="pref_alarm_sound">Sound</string>
+    <string name="pref_test">Test server</string>
+    <string name="pref_test_summary">Tapping here will let you monitor a fake test server. The notifications are sent out on a regular basis of every 2 minutes</string>
+
+
 </resources>

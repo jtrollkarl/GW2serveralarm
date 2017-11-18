@@ -1,10 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <SwitchPreference
-        android:key="@string/pref_notification_key"
-        android:title="@string/pref_notification"
-        android:summary="@string/pref_notification_summ"
-        android:defaultValue="true" />
+    <PreferenceCategory android:title="@string/pref_category_notifications">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/pref_notification_key"
+            android:summary="@string/pref_notification_summ"
+            android:title="@string/pref_notification" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_category_alarm">
+
+        <RingtonePreference
+            android:key="@string/pref_alarm_sound_key"
+            android:ringtoneType="alarm"
+            android:showDefault="true"
+            android:showSilent="true"
+            android:title="@string/pref_alarm_sound" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/pref_alarm_vibrate_key"
+            android:title="@string/pref_alarm_vibrate" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/pref_alarm_light"
+            android:title="@string/pref_light" />
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="@string/pref_category_test">
+        <Preference
+            android:summary="@string/pref_test_summary"
+            android:title="@string/pref_test">
+
+        </Preference>
+
+    </PreferenceCategory>
 
 </PreferenceScreen>
