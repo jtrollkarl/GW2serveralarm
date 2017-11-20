@@ -1,12 +1,13 @@
 package com.moducode.gw2serveralarm.ui.fragment;
 
-import android.app.NotificationManager;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.util.Log;
 
 import com.moducode.gw2serveralarm.R;
@@ -23,13 +24,12 @@ import javax.inject.Inject;
  * Created by Jay on 2017-11-12.
  */
 
-public class PreferencesFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener{
+public class PreferencesFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = PreferencesFragment.class.getSimpleName();
 
     @Inject
     FcmSubscribeService fcmSubscribeService;
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,14 +48,31 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        switch (key){
-            case "KEY_SHOW_NOTIFICATION":
-                if (!sharedPreferences.getBoolean("KEY_SHOW_NOTIFICATION", true)){
-                    fcmSubscribeService.removeNotification();
-                }else{
-                    fcmSubscribeService.showNotification();
-                }
-        }
+        Log.d(TAG, key + " onSharedPreferenceChanged");
 
+        //perhaps not an elegant solution, but switch statement cases
+        //cannot be used with fetching resource strings
+        if (equalsStringKey(key, R.string.pref_notification_key)) {
+            if (!sharedPreferences.getBoolean(getString(R.string.pref_notification_key), true)) {
+                fcmSubscribeService.removeNotification();
+            } else {
+                fcmSubscribeService.showNotification();
+            }
+        }
     }
+
+    @Override
+    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+        // TODO: 2017-11-20 make this a constant somewhere
+        if (preference.getKey().equals(getString(R.string.pref_test_key))) {
+            fcmSubscribeService.subscribeToTopic("alarmtest");
+            getActivity().finish();
+        }
+        return super.onPreferenceTreeClick(preferenceScreen, preference);
+    }
+
+    private boolean equalsStringKey(String key, @StringRes int resId) {
+        return key.equals(getString(resId));
+    }
+
 }

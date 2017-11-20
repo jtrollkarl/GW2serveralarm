@@ -26,8 +26,8 @@
 
         <CheckBoxPreference
             android:defaultValue="true"
-            android:key="@string/pref_alarm_light"
-            android:title="@string/pref_light" />
+            android:key="@string/pref_alarm_light_key"
+            android:title="@string/pref_alarm_light" />
 
     </PreferenceCategory>
 
@@ -35,8 +35,8 @@
     <PreferenceCategory android:title="@string/pref_category_test">
         <Preference
             android:summary="@string/pref_test_summary"
-            android:title="@string/pref_test">
-
+            android:title="@string/pref_test"
+            android:key="@string/pref_test_key">
         </Preference>
 
     </PreferenceCategory>

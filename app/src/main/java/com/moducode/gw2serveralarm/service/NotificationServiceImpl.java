@@ -2,10 +2,13 @@ package com.moducode.gw2serveralarm.service;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
 import com.moducode.gw2serveralarm.R;
+import com.moducode.gw2serveralarm.ui.activity.MainActivity;
 
 import javax.inject.Inject;
 
@@ -41,6 +44,7 @@ public class NotificationServiceImpl implements NotificationService {
                         .setContentTitle(appContext.getString(R.string.notif_monitor_title))
                         .setContentText(appContext.getString(R.string.notif_monitor_summ))
                         .setChannelId(CHANNEL_MONITORING)
+                        .setContentIntent(buildIntent())
                         .setOnlyAlertOnce(true)
                         .setShowWhen(false)
                         .setOngoing(true);
@@ -54,6 +58,12 @@ public class NotificationServiceImpl implements NotificationService {
     public void removeMonitoringNotification() {
         manager.cancel(ID_MONITORING);
         notification = null;
+    }
+
+    private PendingIntent buildIntent(){
+        Intent mainIntent = new Intent(appContext, MainActivity.class);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        return PendingIntent.getActivity(appContext, 0, mainIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private boolean isNotificationShowing(){
