@@ -16,6 +16,10 @@ public interface FcmSubscribeService {
 
     void removeNotification();
 
+    void showAlarm();
+
+    void stopAlarm();
+
     boolean isSubscribed();
 
 }

@@ -26,6 +26,9 @@ public class FcmSubscribeServiceImplTest {
     @Mock
     private SharedPrefsManager sharedPrefsManager;
 
+    @Mock
+    private AlarmServiceManager alarmServiceManager;
+
     @InjectMocks
     private FcmSubscribeServiceImpl subject;
 
@@ -70,7 +73,13 @@ public class FcmSubscribeServiceImplTest {
 
     @Test
     public void isSubscribed() throws Exception {
-        assertEquals(subject.isSubscribed(), anyBoolean());
+        assertEquals(subject.isSubscribed(), false);
+    }
+
+    @Test
+    public void isSubscribed_TRUE() throws Exception{
+        when(sharedPrefsManager.isMonitoringServer()).thenReturn(true);
+        assertEquals(subject.isSubscribed(), true);
     }
 
     @Test
@@ -94,6 +103,19 @@ public class FcmSubscribeServiceImplTest {
         when(sharedPrefsManager.isMonitoringServer()).thenReturn(true);
 
         subject.showNotification();
-        verify(notificationService, never());
+        verify(notificationService, never()).showMonitoringNotification();
+    }
+
+    @Test
+    public void showAlarm() throws Exception{
+        subject.showAlarm();
+        verify(alarmServiceManager).startAlarmService();
+
+    }
+
+    @Test
+    public void stopAlarm() throws Exception{
+        subject.stopAlarm();
+        verify(alarmServiceManager).stopAlarmService();
     }
 }

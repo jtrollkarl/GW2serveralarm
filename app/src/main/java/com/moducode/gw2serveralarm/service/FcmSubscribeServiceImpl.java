@@ -12,14 +12,19 @@ public class FcmSubscribeServiceImpl implements FcmSubscribeService {
     private final FcmMessagingDelegate fcmMessagingDelegate;
     private final NotificationService notificationService;
     private final SharedPrefsManager sharedPrefsManager;
+    private final AlarmServiceManager alarmServiceManager;
 
     // TODO: 2017-11-17 how to show notification onResume from opening the app if it already exists, without redrawing it again?
 
     @Inject
-    public FcmSubscribeServiceImpl(FcmMessagingDelegate fcmMessagingDelegate, SharedPrefsManager sharedPrefsManager, NotificationService notificationService) {
+    public FcmSubscribeServiceImpl(FcmMessagingDelegate fcmMessagingDelegate,
+                                   SharedPrefsManager sharedPrefsManager,
+                                   NotificationService notificationService,
+                                   AlarmServiceManager alarmServiceManager) {
         this.fcmMessagingDelegate = fcmMessagingDelegate;
         this.sharedPrefsManager = sharedPrefsManager;
         this.notificationService = notificationService;
+        this.alarmServiceManager = alarmServiceManager;
     }
 
     @Override
@@ -49,6 +54,16 @@ public class FcmSubscribeServiceImpl implements FcmSubscribeService {
         if(sharedPrefsManager.isNotificationEnabled() && sharedPrefsManager.isMonitoringServer()){
             notificationService.showMonitoringNotification();
         }
+    }
+
+    @Override
+    public void showAlarm() {
+        alarmServiceManager.startAlarmService();
+    }
+
+    @Override
+    public void stopAlarm() {
+        alarmServiceManager.stopAlarmService();
     }
 
     @Override

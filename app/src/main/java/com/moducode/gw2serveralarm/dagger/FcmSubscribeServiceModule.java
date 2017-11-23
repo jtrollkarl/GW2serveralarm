@@ -2,6 +2,8 @@ package com.moducode.gw2serveralarm.dagger;
 
 import android.content.Context;
 
+import com.moducode.gw2serveralarm.service.AlarmServiceManager;
+import com.moducode.gw2serveralarm.service.AlarmServiceManagerImpl;
 import com.moducode.gw2serveralarm.service.FcmMessagingDelegate;
 import com.moducode.gw2serveralarm.service.FcmMessagingDelegateImpl;
 import com.moducode.gw2serveralarm.service.FcmSubscribeService;
@@ -23,8 +25,11 @@ public class FcmSubscribeServiceModule {
 
     @Provides
     @PresenterComponentScope
-    public FcmSubscribeService fcmSubscribeService(FcmMessagingDelegate fcmMessagingDelegate, SharedPrefsManager sharedPrefsManager, NotificationService notificationService){
-        return new FcmSubscribeServiceImpl(fcmMessagingDelegate, sharedPrefsManager, notificationService);
+    public FcmSubscribeService fcmSubscribeService(FcmMessagingDelegate fcmMessagingDelegate,
+                                                   SharedPrefsManager sharedPrefsManager,
+                                                   NotificationService notificationService,
+                                                   AlarmServiceManager alarmServiceManager){
+        return new FcmSubscribeServiceImpl(fcmMessagingDelegate, sharedPrefsManager, notificationService, alarmServiceManager);
     }
 
     @Provides
@@ -37,6 +42,12 @@ public class FcmSubscribeServiceModule {
     @PresenterComponentScope
     public NotificationService notificationService(Context appContext){
         return new NotificationServiceImpl(appContext);
+    }
+
+    @Provides
+    @PresenterComponentScope
+    public AlarmServiceManager alarmServiceManager(Context appContext){
+        return new AlarmServiceManagerImpl(appContext);
     }
 
     @Provides

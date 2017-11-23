@@ -5,12 +5,15 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.moducode.gw2serveralarm.data.MessageEvent;
+import com.moducode.gw2serveralarm.ui.activity.AlarmActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
 public class FcmMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = FcmMessagingService.class.getSimpleName();
+
+    // TODO: 2017-11-23 test whether or not data messages are received
 
     public FcmMessagingService() {
 
@@ -20,6 +23,7 @@ public class FcmMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.d(TAG, "test");
 
+        startActivity(AlarmActivity.newInstance(getApplicationContext()));
         EventBus.getDefault().post(new MessageEvent(extractPayload(remoteMessage)));
     }
 

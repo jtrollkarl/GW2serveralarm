@@ -33,6 +33,8 @@
     <string name="pref_test">Test server</string>
     <string name="pref_test_summary">Tapping here will let you monitor a fake test server. The notifications are sent out on a regular basis of every 2 minutes</string>
     <string name="pref_test_key">KEY_TEST_SERVER</string>
+    <string name="button_stop">Stop</string>
+    <string name="tv_stop_msg">Your server now has an empty slot!</string>
 
 
 </resources>

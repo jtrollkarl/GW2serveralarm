@@ -25,7 +25,7 @@ public class MainActivity extends SingleFragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            startActivity(PreferenceActivity.newInstance(this));
+            startActivity(PreferenceActivity.newInstance(getApplicationContext()));
             return true;
         }
 
