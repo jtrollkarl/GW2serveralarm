@@ -75,4 +75,10 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
         return key.equals(getString(resId));
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+
+    }
 }
