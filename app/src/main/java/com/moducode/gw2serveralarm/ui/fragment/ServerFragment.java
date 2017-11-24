@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.hannesdorfmann.mosby3.mvp.lce.MvpLceFragment;
 import com.moducode.gw2serveralarm.R;
 import com.moducode.gw2serveralarm.dagger.ContextModule;
+
 import com.moducode.gw2serveralarm.dagger.DaggerPresenterComponent;
 import com.moducode.gw2serveralarm.dagger.PresenterComponent;
 import com.moducode.gw2serveralarm.data.ServerModel;
@@ -81,7 +82,8 @@ public class ServerFragment extends MvpLceFragment<SwipeRefreshLayout, List<Serv
                 .contextModule(new ContextModule(appContext))
                 .build();
 
-        return new ServerFragmentPresenter(component.getFcmSubscribeService(),
+        return new ServerFragmentPresenter(component.getLogger(),
+                component.getFcmSubscribeService(),
                 component.getSchedulerProvider(),
                 component.getServerService());
     }
@@ -91,11 +93,6 @@ public class ServerFragment extends MvpLceFragment<SwipeRefreshLayout, List<Serv
         super.showError(e, false);
         Log.e(TAG, "presenter error", e);
         contentView.setRefreshing(false);
-    }
-
-    @Override
-    public void logD(String logMsg) {
-        Log.d(TAG, logMsg);
     }
 
     @Override

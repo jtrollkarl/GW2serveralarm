@@ -1,6 +1,7 @@
 package com.moducode.gw2serveralarm.ui.fragment;
 
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
+import com.moducode.gw2serveralarm.PresenterLogger;
 import com.moducode.gw2serveralarm.R;
 import com.moducode.gw2serveralarm.data.MessageEvent;
 import com.moducode.gw2serveralarm.data.ServerModel;
@@ -30,14 +31,16 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
 
     private static final String TAG = ServerFragmentPresenter.class.getSimpleName();
 
+
+    private final PresenterLogger logger;
     private final FcmSubscribeService fcmSubscribeService;
     private final SchedulerProvider schedulers;
     private final ServerService serverService;
-
     private final CompositeDisposable compositeDisposable;
 
     @Inject
-    public ServerFragmentPresenter(FcmSubscribeService fcmSubscribeService, SchedulerProvider schedulers, ServerService serverService) {
+    public ServerFragmentPresenter(PresenterLogger logger, FcmSubscribeService fcmSubscribeService, SchedulerProvider schedulers, ServerService serverService) {
+        this.logger = logger;
         this.fcmSubscribeService = fcmSubscribeService;
         this.schedulers = schedulers;
         this.serverService = serverService;
@@ -82,7 +85,7 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
     @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onNotificationReceived(MessageEvent messageEvent) {
-        getView().logD(messageEvent.getMessage());
+        logger.logD(TAG, messageEvent.getMessage());
         fcmSubscribeService.unSubscribeFromTopic();
         if(isViewAttached()){
             getView().showAlarm();

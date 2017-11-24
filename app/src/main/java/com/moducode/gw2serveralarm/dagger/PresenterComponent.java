@@ -1,5 +1,6 @@
 package com.moducode.gw2serveralarm.dagger;
 
+import com.moducode.gw2serveralarm.PresenterLogger;
 import com.moducode.gw2serveralarm.retrofit.ServerService;
 import com.moducode.gw2serveralarm.schedulers.SchedulerProvider;
 import com.moducode.gw2serveralarm.service.FcmSubscribeService;
@@ -12,7 +13,7 @@ import dagger.Component;
  */
 
 @PresenterComponentScope
-@Component(modules = {FcmSubscribeServiceModule.class, SchedulerModule.class, ServerServiceModule.class})
+@Component(modules = {LoggerModule.class, FcmSubscribeServiceModule.class, SchedulerModule.class, ServerServiceModule.class})
 public interface PresenterComponent {
 
     FcmSubscribeService getFcmSubscribeService();
@@ -20,6 +21,8 @@ public interface PresenterComponent {
     SchedulerProvider getSchedulerProvider();
 
     ServerService getServerService();
+
+    PresenterLogger getLogger();
 
     void injectPreferencesFragment(PreferencesFragment preferencesFragment);
 }

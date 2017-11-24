@@ -17,7 +17,6 @@ public interface ServerFragmentContract {
 
     interface View extends MvpLceView<List<ServerModel>>{
         void showAlarm();
-        void logD(String logMsg);
         void showMessage(@StringRes int msg);
         void showMonitoringView();
         void hideMonitoringView();
