@@ -27,9 +27,8 @@ public class FcmSubscribeServiceModule {
     @PresenterComponentScope
     public FcmSubscribeService fcmSubscribeService(FcmMessagingDelegate fcmMessagingDelegate,
                                                    SharedPrefsManager sharedPrefsManager,
-                                                   NotificationService notificationService,
-                                                   AlarmServiceManager alarmServiceManager){
-        return new FcmSubscribeServiceImpl(fcmMessagingDelegate, sharedPrefsManager, notificationService, alarmServiceManager);
+                                                   NotificationService notificationService){
+        return new FcmSubscribeServiceImpl(fcmMessagingDelegate, sharedPrefsManager, notificationService);
     }
 
     @Provides
@@ -42,12 +41,6 @@ public class FcmSubscribeServiceModule {
     @PresenterComponentScope
     public NotificationService notificationService(Context appContext){
         return new NotificationServiceImpl(appContext);
-    }
-
-    @Provides
-    @PresenterComponentScope
-    public AlarmServiceManager alarmServiceManager(Context appContext){
-        return new AlarmServiceManagerImpl(appContext);
     }
 
     @Provides

@@ -1,5 +1,6 @@
 package com.moducode.gw2serveralarm.ui;
 
+import com.moducode.gw2serveralarm.PresenterLogger;
 import com.moducode.gw2serveralarm.R;
 import com.moducode.gw2serveralarm.data.MessageEvent;
 import com.moducode.gw2serveralarm.data.ServerModel;
@@ -36,6 +37,9 @@ import static org.mockito.Mockito.when;
 public class ServerFragmentPresenterTest {
 
     @Mock
+    private PresenterLogger logger;
+
+    @Mock
     private FcmSubscribeService fcmSubscribeService;
 
     @Mock
@@ -54,7 +58,7 @@ public class ServerFragmentPresenterTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        subject = new ServerFragmentPresenter(fcmSubscribeService, new ImmediateSchedulers(), serverService);
+        subject = new ServerFragmentPresenter(logger, fcmSubscribeService, new ImmediateSchedulers(), serverService);
         subject.attachView(view);
 
         fullServer = new ServerModel(1, "Test", "Full");

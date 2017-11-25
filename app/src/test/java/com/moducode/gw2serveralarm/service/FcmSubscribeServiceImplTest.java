@@ -105,17 +105,5 @@ public class FcmSubscribeServiceImplTest {
         subject.showNotification();
         verify(notificationService, never()).showMonitoringNotification();
     }
-
-    @Test
-    public void showAlarm() throws Exception{
-        subject.showAlarm();
-        verify(alarmServiceManager).startAlarmService();
-
-    }
-
-    @Test
-    public void stopAlarm() throws Exception{
-        subject.stopAlarm();
-        verify(alarmServiceManager).stopAlarmService();
-    }
+    
 }
