@@ -32,6 +32,7 @@
         <activity
             android:name=".ui.activity.AlarmActivity"
             android:launchMode="singleTask"
+            android:excludeFromRecents="true"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name=".FcmInstanceIDService">

@@ -105,5 +105,5 @@ public class FcmSubscribeServiceImplTest {
         subject.showNotification();
         verify(notificationService, never()).showMonitoringNotification();
     }
-    
+
 }

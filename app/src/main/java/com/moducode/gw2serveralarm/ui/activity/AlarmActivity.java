@@ -3,20 +3,37 @@ package com.moducode.gw2serveralarm.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.annotation.NonNull;
 import android.view.WindowManager;
+import android.widget.Button;
 
-import com.moducode.gw2serveralarm.ui.fragment.AlarmFragment;
+import com.hannesdorfmann.mosby3.mvp.MvpActivity;
+import com.moducode.gw2serveralarm.R;
+import com.moducode.gw2serveralarm.dagger.ContextModule;
+import com.moducode.gw2serveralarm.dagger.DaggerPresenterComponent;
+import com.moducode.gw2serveralarm.dagger.PresenterComponent;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Jay on 2017-11-17.
  */
 
-public class AlarmActivity extends SingleFragmentActivity {
+public class AlarmActivity extends MvpActivity<AlarmActivityContract.View, AlarmActivityContract.Actions>
+        implements AlarmActivityContract.View {
+
+    //no fragment here as the alarm will always take up the entire display area
+
+    @BindView(R.id.b_stop)
+    Button bStop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_alarm);
+        ButterKnife.bind(this);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -24,15 +41,31 @@ public class AlarmActivity extends SingleFragmentActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
     }
 
+    @NonNull
     @Override
-    protected Fragment createFragment() {
-        return new AlarmFragment();
+    public AlarmActivityContract.Actions createPresenter() {
+        Context appContext = getApplicationContext();
+
+        PresenterComponent component = DaggerPresenterComponent.builder()
+                .contextModule(new ContextModule(appContext))
+                .build();
+
+        return new AlarmActivityPresenter(component.getAlarmServiceManager());
     }
 
 
-
-    public static Intent newInstance(Context context){
+    public static Intent newInstance(Context context) {
         return new Intent(context, AlarmActivity.class);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.startAlarmService();
+    }
+
+    @OnClick(R.id.b_stop)
+    public void onViewClicked() {
+        presenter.stopAlarmService();
+    }
 }
