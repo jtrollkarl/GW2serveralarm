@@ -31,8 +31,9 @@
             android:parentActivityName=".ui.activity.MainActivity" />
         <activity
             android:name=".ui.activity.AlarmActivity"
-            android:launchMode="singleTask"
             android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="sensorPortrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name=".FcmInstanceIDService">
