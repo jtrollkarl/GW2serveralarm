@@ -46,7 +46,7 @@ public class AlarmFragment extends MvpFragment<AlarmFragmentContract.View, Alarm
                 .contextModule(new ContextModule(appContext))
                 .build();
 
-        return new AlarmFragmentPresenter(component.getFcmSubscribeService());
+        return new AlarmFragmentPresenter(component.getAlarmServiceManager());
     }
 
     @Override
