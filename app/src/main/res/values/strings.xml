@@ -10,6 +10,7 @@
     <!--Notifications-->
     <string name="notif_monitor_title" translatable="false">GW2 World Monitor</string>
     <string name="notif_monitor_summ" translatable="true">You are currently monitoring a server</string>
+    <string name="notif_button_stop" translatable="true">Stop</string>
 
     <!--Preferences-->
     <string name="pref_notification_summ" translatable="true">Displays a notification icon while monitoring a server</string>
@@ -19,7 +20,7 @@
     <string name="pref_notification_key" translatable="false">KEY_SHOW_NOTIFICATION</string>
     <string name="pref_alarm_vibrate_key" translatable="false">KEY_ALARM_VIBRATE</string>
     <string name="pref_alarm_light_key" translatable="false">KEY_ALARM_LIGHT</string>
-    <string name="pref_alarm_sound_key">KEY_ALARM_SOUND</string>
+    <string name="pref_alarm_sound_key" translatable="false">KEY_ALARM_SOUND</string>
 
     <string name="pref_category_notifications" translatable="true">Notifications</string>
     <string name="pref_category_alarm" translatable="true">Alarm</string>

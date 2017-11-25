@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.renderscript.RenderScript;
 import android.support.v4.app.NotificationCompat;
 
 import com.moducode.gw2serveralarm.R;
@@ -43,13 +44,13 @@ public class NotificationServiceImpl implements NotificationService {
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentTitle(appContext.getString(R.string.notif_monitor_title))
                         .setContentText(appContext.getString(R.string.notif_monitor_summ))
+                        .addAction(R.drawable.ic_clear, appContext.getString(R.string.notif_button_stop), buildIntent())
                         .setChannelId(CHANNEL_MONITORING)
                         .setContentIntent(buildIntent())
                         .setOnlyAlertOnce(true)
                         .setShowWhen(false)
                         .setOngoing(true);
-
-
+        
         notification = builder.build();
         manager.notify(ID_MONITORING, notification);
     }
