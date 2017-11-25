@@ -50,7 +50,9 @@ public class AlarmActivity extends MvpActivity<AlarmActivityContract.View, Alarm
                 .contextModule(new ContextModule(appContext))
                 .build();
 
-        return new AlarmActivityPresenter(component.getAlarmServiceManager());
+        return new AlarmActivityPresenter(component.getLogger(),
+                component.getFcmSubscribeService(),
+                component.getAlarmServiceManager());
     }
 
 
