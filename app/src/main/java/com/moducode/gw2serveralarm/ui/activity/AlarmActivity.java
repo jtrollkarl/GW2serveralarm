@@ -66,8 +66,16 @@ public class AlarmActivity extends MvpActivity<AlarmActivityContract.View, Alarm
         presenter.startAlarmService();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.stopAlarmService();
+    }
+
     @OnClick(R.id.b_stop)
     public void onViewClicked() {
         presenter.stopAlarmService();
+        finish();
     }
+
 }

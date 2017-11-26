@@ -3,6 +3,7 @@ package com.moducode.gw2serveralarm.dagger;
 import com.moducode.gw2serveralarm.PresenterLogger;
 import com.moducode.gw2serveralarm.retrofit.ServerService;
 import com.moducode.gw2serveralarm.schedulers.SchedulerProvider;
+import com.moducode.gw2serveralarm.service.AlarmService;
 import com.moducode.gw2serveralarm.service.AlarmServiceManager;
 import com.moducode.gw2serveralarm.service.FcmSubscribeService;
 import com.moducode.gw2serveralarm.ui.fragment.PreferencesFragment;
@@ -28,4 +29,6 @@ public interface PresenterComponent {
     AlarmServiceManager getAlarmServiceManager();
 
     void injectPreferencesFragment(PreferencesFragment preferencesFragment);
+
+    void injectAlarmService(AlarmService alarmService);
 }

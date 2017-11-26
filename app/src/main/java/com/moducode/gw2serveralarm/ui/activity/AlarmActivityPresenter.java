@@ -1,5 +1,7 @@
 package com.moducode.gw2serveralarm.ui.activity;
 
+import android.util.Log;
+
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.moducode.gw2serveralarm.PresenterLogger;
 import com.moducode.gw2serveralarm.service.AlarmServiceManager;
@@ -25,6 +27,7 @@ public class AlarmActivityPresenter extends MvpBasePresenter<AlarmActivityContra
     @Inject
     AlarmServiceManager alarmServiceManager;
 
+    private static final String TAG = "AlarmActivityPresenter";
 
     @Inject
     public AlarmActivityPresenter(PresenterLogger logger, FcmSubscribeService fcmSubscribeService, AlarmServiceManager alarmServiceManager) {
@@ -35,12 +38,16 @@ public class AlarmActivityPresenter extends MvpBasePresenter<AlarmActivityContra
 
     @Override
     public void startAlarmService() {
+        logger.logD(TAG, "starting AlarmService..");
+
         fcmSubscribeService.unSubscribeFromTopic();
         alarmServiceManager.startAlarmService();
     }
 
     @Override
     public void stopAlarmService() {
+        logger.logD(TAG, "stopping AlarmService..");
+
         alarmServiceManager.stopAlarmService();
     }
 

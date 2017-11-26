@@ -11,6 +11,7 @@
     <string name="notif_monitor_title" translatable="false">GW2 World Monitor</string>
     <string name="notif_monitor_summ" translatable="true">You are currently monitoring a server</string>
     <string name="notif_button_stop" translatable="true">Stop</string>
+    <string name="notif_slot_free">Slot available!</string>
 
     <!--Preferences-->
     <string name="pref_notification_summ" translatable="true">Displays a notification icon while monitoring a server</string>
