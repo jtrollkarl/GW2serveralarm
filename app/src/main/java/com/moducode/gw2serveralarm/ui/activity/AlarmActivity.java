@@ -57,7 +57,9 @@ public class AlarmActivity extends MvpActivity<AlarmActivityContract.View, Alarm
 
 
     public static Intent newInstance(Context context) {
-        return new Intent(context, AlarmActivity.class);
+        Intent alarmActivityIntent = new Intent(context, AlarmActivity.class);
+        alarmActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return alarmActivityIntent;
     }
 
     @Override
