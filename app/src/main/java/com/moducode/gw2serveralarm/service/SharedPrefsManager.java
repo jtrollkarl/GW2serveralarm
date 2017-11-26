@@ -1,5 +1,7 @@
 package com.moducode.gw2serveralarm.service;
 
+
+
 /**
  * Created by Jay on 2017-11-09.
  */
@@ -16,4 +18,9 @@ public interface SharedPrefsManager {
 
     String getSavedServer();
 
+    boolean isVibrateEnabled();
+
+    boolean isLedEnabled();
+
+    String getAlarmUri();
 }

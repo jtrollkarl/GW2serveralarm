@@ -20,7 +20,7 @@ import dagger.Provides;
  * Created by Jay on 2017-11-14.
  */
 
-@Module(includes = {ContextModule.class})
+@Module(includes = {ContextModule.class, SharedPrefsManagerModule.class})
 public class FcmSubscribeServiceModule {
 
     @Provides
@@ -29,12 +29,6 @@ public class FcmSubscribeServiceModule {
                                                    SharedPrefsManager sharedPrefsManager,
                                                    NotificationService notificationService){
         return new FcmSubscribeServiceImpl(fcmMessagingDelegate, sharedPrefsManager, notificationService);
-    }
-
-    @Provides
-    @PresenterComponentScope
-    public SharedPrefsManager sharedPrefsManager(Context appContext){
-        return new SharedPrefsManagerImpl(appContext);
     }
 
     @Provides
