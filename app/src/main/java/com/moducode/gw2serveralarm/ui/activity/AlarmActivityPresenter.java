@@ -38,16 +38,12 @@ public class AlarmActivityPresenter extends MvpBasePresenter<AlarmActivityContra
 
     @Override
     public void startAlarmService() {
-        logger.logD(TAG, "starting AlarmService..");
-
         fcmSubscribeService.unSubscribeFromTopic();
         alarmServiceManager.startAlarmService();
     }
 
     @Override
     public void stopAlarmService() {
-        logger.logD(TAG, "stopping AlarmService..");
-
         alarmServiceManager.stopAlarmService();
     }
 

@@ -59,6 +59,7 @@ public class AlarmService extends Service {
         component.injectAlarmService(this);
 
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        mediaPlayer = new MediaPlayer();
     }
 
     @Override
@@ -73,7 +74,6 @@ public class AlarmService extends Service {
 
     private void playAudio(){
         try {
-            mediaPlayer = new MediaPlayer();
             mediaPlayer.setDataSource(this, Uri.parse(sharedPrefsManager.getAlarmUri()));
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
             mediaPlayer.setLooping(true);
@@ -81,6 +81,7 @@ public class AlarmService extends Service {
             mediaPlayer.start();
         } catch (IOException e) {
             Log.e(TAG, "No alarm sound found?", e);
+            stopMediaPlayer();
         }
     }
 
@@ -102,7 +103,17 @@ public class AlarmService extends Service {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "Killing AlarmService and freeing resources");
-        mediaPlayer.stop();
-        mediaPlayer = null;
+        stopForeground(true);
+        stopMediaPlayer();
+    }
+
+    private void stopMediaPlayer(){
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.reset();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+
     }
 }
