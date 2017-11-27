@@ -4,12 +4,13 @@ import android.app.Notification;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 
 import android.net.Uri;
 import android.os.IBinder;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -38,6 +39,7 @@ public class AlarmService extends Service {
     SharedPrefsManager sharedPrefsManager;
 
     private MediaPlayer mediaPlayer;
+    private Vibrator vibrator;
     private AudioManager audioManager;
 
 
@@ -59,6 +61,7 @@ public class AlarmService extends Service {
         component.injectAlarmService(this);
 
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mediaPlayer = new MediaPlayer();
     }
 
@@ -67,12 +70,15 @@ public class AlarmService extends Service {
         Log.d(TAG, "Starting AlarmService...");
 
         startForeground(CHANNEL_ALARM_ID, getNotification());
-        playAudio();
+        playAlarm();
+        if(sharedPrefsManager.isVibrateEnabled() && vibrator.hasVibrator()){
+            beginVibrate();
+        }
 
         return START_NOT_STICKY;
     }
 
-    private void playAudio(){
+    private void playAlarm(){
         try {
             mediaPlayer.reset();
             mediaPlayer.setDataSource(this, Uri.parse(sharedPrefsManager.getAlarmUri()));
@@ -84,6 +90,10 @@ public class AlarmService extends Service {
             Log.e(TAG, "No alarm sound found?", e);
             stopMediaPlayer();
         }
+    }
+
+    private void beginVibrate() {
+        vibrator.vibrate(new long[] {0, 500, 500, 500}, 2 );
     }
 
     private Notification getNotification(){
@@ -106,6 +116,7 @@ public class AlarmService extends Service {
         Log.d(TAG, "Killing AlarmService and freeing resources");
         stopForeground(true);
         stopMediaPlayer();
+        stopVibrator();
     }
 
     private void stopMediaPlayer(){
@@ -114,6 +125,12 @@ public class AlarmService extends Service {
             mediaPlayer.release();
             mediaPlayer = null;
         }
+    }
 
+    private void stopVibrator(){
+        if(vibrator != null){
+            vibrator.cancel();
+            vibrator = null;
+        }
     }
 }
