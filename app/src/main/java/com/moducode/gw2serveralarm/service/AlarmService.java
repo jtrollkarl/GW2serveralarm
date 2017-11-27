@@ -74,6 +74,7 @@ public class AlarmService extends Service {
 
     private void playAudio(){
         try {
+            mediaPlayer.reset();
             mediaPlayer.setDataSource(this, Uri.parse(sharedPrefsManager.getAlarmUri()));
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
             mediaPlayer.setLooping(true);
@@ -110,7 +111,6 @@ public class AlarmService extends Service {
     private void stopMediaPlayer(){
         if (mediaPlayer != null) {
             mediaPlayer.stop();
-            mediaPlayer.reset();
             mediaPlayer.release();
             mediaPlayer = null;
         }
