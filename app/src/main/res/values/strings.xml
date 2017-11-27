@@ -15,7 +15,7 @@
 
     <!--Preferences-->
     <string name="pref_notification_summ" translatable="true">Displays a notification icon while monitoring a server</string>
-    <string name="pref_notification" translatable="true">Show monitoring icon</string>
+    <string name="pref_notification" translatable="true">Monitoring icon</string>
 
     <!--Preference Keys-->
     <string name="pref_notification_key" translatable="false">KEY_SHOW_NOTIFICATION</string>
