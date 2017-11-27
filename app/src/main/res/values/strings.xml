@@ -6,6 +6,7 @@
     <string name="error_fetch_servers" translatable="true">Error fetching servers</string>
     <string name="success_fetch_servers" translatable="true">Fetched servers</string>
     <string name="error_server_not_full" translatable="true">This server is not full!</string>
+    <string name="error_play_services">GooglePlay services are not installed</string>
 
     <!--Notifications-->
     <string name="notif_monitor_title" translatable="false">GW2 World Monitor</string>
@@ -37,6 +38,7 @@
     <string name="pref_test_key">KEY_TEST_SERVER</string>
     <string name="button_stop">Stop</string>
     <string name="tv_stop_msg">Your server now has an empty slot!</string>
+
 
 
 </resources>
