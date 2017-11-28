@@ -9,7 +9,6 @@ import android.media.MediaPlayer;
 
 import android.net.Uri;
 import android.os.IBinder;
-import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
@@ -70,12 +69,18 @@ public class AlarmService extends Service {
         Log.d(TAG, "Starting AlarmService...");
 
         startForeground(CHANNEL_ALARM_ID, getNotification());
-        playAlarm();
+        if(grantAudioFocus()){
+            playAlarm();
+        }
         if(sharedPrefsManager.isVibrateEnabled() && vibrator.hasVibrator()){
             beginVibrate();
         }
 
         return START_NOT_STICKY;
+    }
+
+    private boolean grantAudioFocus(){
+        return audioManager.requestAudioFocus(null, AudioManager.STREAM_ALARM, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT) == 1;
     }
 
     private void playAlarm(){
@@ -117,6 +122,7 @@ public class AlarmService extends Service {
         stopForeground(true);
         stopMediaPlayer();
         stopVibrator();
+        audioManager.abandonAudioFocus(null);
     }
 
     private void stopMediaPlayer(){

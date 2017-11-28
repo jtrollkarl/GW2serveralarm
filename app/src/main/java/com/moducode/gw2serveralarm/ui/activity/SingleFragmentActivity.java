@@ -49,9 +49,9 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
         int resultCode = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
         if (resultCode != ConnectionResult.SUCCESS) {
             Toast.makeText(this, R.string.error_play_services, Toast.LENGTH_LONG).show();
-            Log.w(TAG, "Play services are not installed. App will not function properly.");
+            Log.w(TAG, "Play services are not installed. App will not function correctly.");
         }else {
-            Log.d(TAG, "PlayServices installed. App is functioning correctly");
+            Log.d(TAG, "PlayServices installed.");
         }
     }
 

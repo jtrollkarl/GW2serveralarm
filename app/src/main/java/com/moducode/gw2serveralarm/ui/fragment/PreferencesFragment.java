@@ -48,8 +48,6 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        Log.d(TAG, key + " onSharedPreferenceChanged");
-
         //perhaps not an elegant solution, but switch statement cases
         //cannot be used with fetching resource strings
         if (equalsStringKey(key, R.string.pref_notification_key)) {
