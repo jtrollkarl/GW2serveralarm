@@ -2,6 +2,7 @@ package com.moducode.gw2serveralarm.service;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.StringRes;
@@ -71,7 +72,7 @@ public class SharedPrefsManagerImpl implements SharedPrefsManager {
 
     @Override
     public String getAlarmUri() {
-        return preferences.getString(KEY_ALARM_SOUND, Settings.System.ALARM_ALERT);
+        return preferences.getString(KEY_ALARM_SOUND, Settings.System.DEFAULT_ALARM_ALERT_URI.toString());
     }
 
 }
