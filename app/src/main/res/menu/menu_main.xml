@@ -4,6 +4,7 @@
     tools:context="com.moducode.gw2serveralarm.ui.activity.MainActivity">
     <item
         android:id="@+id/action_settings"
+        android:icon="@drawable/ic_settings_white_24dp"
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="always" />
