@@ -24,11 +24,6 @@
             android:key="@string/pref_alarm_vibrate_key"
             android:title="@string/pref_alarm_vibrate" />
 
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="@string/pref_alarm_light_key"
-            android:title="@string/pref_alarm_light" />
-
     </PreferenceCategory>
 
 
