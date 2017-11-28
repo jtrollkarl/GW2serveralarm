@@ -5,7 +5,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.renderscript.RenderScript;
 import android.support.v4.app.NotificationCompat;
 
 import com.moducode.gw2serveralarm.R;
@@ -44,9 +43,8 @@ public class NotificationServiceImpl implements NotificationService {
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentTitle(appContext.getString(R.string.notif_monitor_title))
                         .setContentText(appContext.getString(R.string.notif_monitor_summ))
-                        .addAction(R.drawable.ic_clear, appContext.getString(R.string.notif_button_stop), buildIntent())
                         .setChannelId(CHANNEL_MONITORING)
-                        .setContentIntent(buildIntent())
+                        .setContentIntent(buildToAppIntent())
                         .setOnlyAlertOnce(true)
                         .setShowWhen(false)
                         .setOngoing(true);
@@ -61,11 +59,11 @@ public class NotificationServiceImpl implements NotificationService {
         notification = null;
     }
 
-    private PendingIntent buildIntent(){
+    private PendingIntent buildToAppIntent(){
         Intent mainIntent = new Intent(appContext, MainActivity.class);
-        mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         return PendingIntent.getActivity(appContext, 0, mainIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
+
 
     private boolean isNotificationShowing(){
         return notification != null;
