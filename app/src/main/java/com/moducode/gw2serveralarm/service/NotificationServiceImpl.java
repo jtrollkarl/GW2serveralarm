@@ -40,7 +40,7 @@ public class NotificationServiceImpl implements NotificationService {
 
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(appContext, CHANNEL_MONITORING)
-                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setSmallIcon(R.drawable.ic_monitoring_server)
                         .setContentTitle(appContext.getString(R.string.notif_monitor_title))
                         .setContentText(appContext.getString(R.string.notif_monitor_summ))
                         .setChannelId(CHANNEL_MONITORING)

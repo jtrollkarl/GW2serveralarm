@@ -101,9 +101,10 @@ public class AlarmService extends Service {
         vibrator.vibrate(new long[] {0, 500, 500, 500}, 2 );
     }
 
+    // TODO: 2017-11-29 move to notification service?
     private Notification getNotification(){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ALARM)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.ic_monitoring_server)
                 .setContentTitle(getString(R.string.notif_monitor_title))
                 .setContentText(getString(R.string.notif_slot_free))
                 .setChannelId(CHANNEL_ALARM)
