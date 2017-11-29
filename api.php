@@ -1,31 +1,44 @@
 <?php
 
+// listen on api and push notification to FCM
+
+
+
+
+
+/*
 if(isset($_GET['send_notification'])){
    send_notification ();
 }
+*/
 
-// my old server key
-// AAAACRYuojw:APA91bHFhU-eZnL17lualkiJZ2e6DjxgJ82cN1hEPiV4aTfMLFF0WYV1HG5IpbdXG9urfCeVhHE5zRu84uK_awqrRhFvUbtXLCkNU_GxgIH99eBJq13OH57QKjsGcegeIN7CGw7njRPX');
-// Justins server key
-// AAAA1O0HZKE:APA91bE3hazO-2rTgEzbIE4j2ManIGygi1H5AyIzOIgG56W1TjouhMerTO12lWbWG7aJ2UdkEqmBzqz4XtzGsEdIzuZXM6580UZ62fDXDKFGm0Nh4-ouJcr6-YcK6d_6TWh6sQ6on9iv
-function send_notification()
+
+$messageText = "Automated FCM Message";
+
+function send_notification($world)
 {
-	echo 'Hello there Justin';
+	echo 'World '.$world.' has changed';
 define( 'API_ACCESS_KEY', 'AAAA1O0HZKE:APA91bE3hazO-2rTgEzbIE4j2ManIGygi1H5AyIzOIgG56W1TjouhMerTO12lWbWG7aJ2UdkEqmBzqz4XtzGsEdIzuZXM6580UZ62fDXDKFGm0Nh4-ouJcr6-YcK6d_6TWh6sQ6on9iv');
- //   $registrationIds = ;
+
 #prep the bundle
+$topic = "2007";
      $msg = array
           (
-		'body' 	=> 'Yo Justin! Wassup!',
-		'title'	=> 'New Push Notification',
+
+		'body' 	=> 'Automated FCM Message',
+		'title'	=> 'Push Data Every Hour',
              	
           );
 	$fields = array
 			(
-				'to'		=> $_REQUEST['token'],
-				'notification'	=> $msg
+				'to'		=> '/topics/'.$world.'',
+				// ex. 'to'		=> '/topics/2007',
+		        	'data' => array(
+		               	 "message" => $messageText,
+					 "contents" => "Push Data Automaticly"
+		       	 )	
+
 			);
-	
 	
 	$headers = array
 			(
@@ -44,4 +57,63 @@ define( 'API_ACCESS_KEY', 'AAAA1O0HZKE:APA91bE3hazO-2rTgEzbIE4j2ManIGygi1H5AyIzO
 		echo $result;
 		curl_close( $ch );
 }
+// end of send_notification function
+
+
+// listen for changes on the servers
+
+// get previous api data
+$old_json = file_get_contents('worlds.json');
+
+
+$json = json_decode(file_get_contents("https://api.guildwars2.com/v2/worlds?ids=all"), true);
+$last_json = json_decode($old_json, true);
+$difference = array_diff_assoc($json, $last_json);
+
+// print_r($difference); 
+
+
+foreach($last_json as $key=>$value){
+    if($value['population'] != $json[$key]['population']){
+        // value is changed
+		
+	$world_ID = $json[$key]['id'];
+		
+		$world_before = $value['population'];
+		$world_now = $json[$key]['population'];
+
+		
+		if($world_before == "Full" && $world_now != "Full"){
+		// call function to send notification for this topic/server/world
+		send_notification($world_ID);
+		}else{
+		// don't send notification to servers that was not changed from full to something less
+		}
+				echo "<br /><br />";
+				echo $world_ID;
+				echo "<br />";
+				echo "value has changed";
+				echo "<br />";
+				echo $json[$key]['name']." - ".$json[$key]['population'];
+				echo "<br />";
+				echo "Old value was: ".$last_json[$key]['population'];
+				echo "<br />";
+				echo "New value is: ".$json[$key]['population'];
+				echo "<br /><br />";
+    }else{
+					// value is not changed
+				echo "value is the same";
+				echo "<br />";
+    }
+}
+
+// store new value in file
+$json = file_get_contents('https://api.guildwars2.com/v2/worlds?ids=all');
+$data = json_decode($json);
+file_put_contents('worlds.json', json_encode($data));
+
+// call the function once again for the the notification test
+send_notification("alarmtest");
+
+
 ?>
