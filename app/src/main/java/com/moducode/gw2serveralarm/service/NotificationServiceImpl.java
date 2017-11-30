@@ -35,13 +35,13 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void showMonitoringNotification() {
+    public void showMonitoringNotification(String serverName) {
         if(isNotificationShowing()) return;
 
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(appContext, CHANNEL_MONITORING)
                         .setSmallIcon(R.drawable.ic_monitoring_server)
-                        .setContentText(appContext.getString(R.string.notif_monitor_summ))
+                        .setContentText(appContext.getString(R.string.notif_monitor_summ, serverName))
                         .setChannelId(CHANNEL_MONITORING)
                         .setContentIntent(buildToAppIntent())
                         .setOnlyAlertOnce(true)

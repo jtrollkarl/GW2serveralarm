@@ -12,11 +12,16 @@ public interface SharedPrefsManager {
 
     boolean isNotificationEnabled();
 
-    void saveServer(String id);
+    void saveServerId(String id);
+
+    String getSavedServerId();
+
+    void saveServerName(String serverName);
+
+    String getSavedServerName();
 
     void clearSavedTopic();
 
-    String getSavedServer();
 
     boolean isVibrateEnabled();
 

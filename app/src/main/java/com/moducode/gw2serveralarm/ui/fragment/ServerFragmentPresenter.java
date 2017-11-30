@@ -105,16 +105,16 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
     @Override
     public void monitorServer(final ServerModel server) {
         if(isViewAttached()){
-            getView().showMonitoringView();
+            getView().showMonitoringView(server.getName());
         }
-        fcmSubscribeService.subscribeToTopic(server.getIdString());
+        fcmSubscribeService.subscribeToServer(server);
     }
 
     @Override
     public void onResume() {
         if(fcmSubscribeService.isSubscribed()){
             fcmSubscribeService.showNotification();
-            if(isViewAttached()) getView().showMonitoringView();
+            if(isViewAttached()) getView().showMonitoringView(fcmSubscribeService.getSavedServer());
         }else {
             fcmSubscribeService.removeNotification();
             if(isViewAttached()) getView().hideMonitoringView();

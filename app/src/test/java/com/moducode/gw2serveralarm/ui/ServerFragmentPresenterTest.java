@@ -54,6 +54,8 @@ public class ServerFragmentPresenterTest {
     private ServerModel nonFullServer;
     private List<ServerModel> serverModelList;
 
+    private static final String testServerName = "test";
+
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -92,17 +94,18 @@ public class ServerFragmentPresenterTest {
     public void monitorServer() throws Exception{
         subject.monitorServer(fullServer);
 
-        verify(fcmSubscribeService).subscribeToTopic(fullServer.getIdString());
+        verify(fcmSubscribeService).subscribeToServer(fullServer);
     }
 
     @Test
     public void onResume_MONITORING_TRUE() throws Exception {
         when(fcmSubscribeService.isSubscribed()).thenReturn(true);
+        when(fcmSubscribeService.getSavedServer()).thenReturn(testServerName);
 
         subject.onResume();
 
         verify(fcmSubscribeService).showNotification();
-        verify(view).showMonitoringView();
+        verify(view).showMonitoringView(testServerName);
     }
 
     @Test

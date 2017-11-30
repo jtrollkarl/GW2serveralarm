@@ -2,10 +2,8 @@ package com.moducode.gw2serveralarm.service;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.support.annotation.StringRes;
 
 import com.moducode.gw2serveralarm.R;
 
@@ -17,7 +15,8 @@ import javax.inject.Inject;
 
 public class SharedPrefsManagerImpl implements SharedPrefsManager {
 
-    private static final String SERVER_KEY = "server_key";
+    private static final String SERVER_ID_KEY = "server_id_key";
+    private static final String SERVER_NAME_KEY = "server_name_key";
 
     private final SharedPreferences preferences;
 
@@ -37,7 +36,7 @@ public class SharedPrefsManagerImpl implements SharedPrefsManager {
 
     @Override
     public boolean isMonitoringServer() {
-        return preferences.contains(SERVER_KEY);
+        return preferences.contains(SERVER_ID_KEY);
     }
 
     @Override
@@ -46,18 +45,18 @@ public class SharedPrefsManagerImpl implements SharedPrefsManager {
     }
 
     @Override
-    public void saveServer(String id) {
-        preferences.edit().putString(SERVER_KEY, id).apply();
+    public void saveServerId(String id) {
+        preferences.edit().putString(SERVER_ID_KEY, id).apply();
     }
 
     @Override
     public void clearSavedTopic() {
-        preferences.edit().remove(SERVER_KEY).apply();
+        preferences.edit().remove(SERVER_ID_KEY).apply();
     }
 
     @Override
-    public String getSavedServer() {
-        return preferences.getString(SERVER_KEY, "empty");
+    public String getSavedServerId() {
+        return preferences.getString(SERVER_ID_KEY, "empty");
     }
 
     @Override
@@ -75,4 +74,13 @@ public class SharedPrefsManagerImpl implements SharedPrefsManager {
         return preferences.getString(KEY_ALARM_SOUND, Settings.System.DEFAULT_ALARM_ALERT_URI.toString());
     }
 
+    @Override
+    public void saveServerName(String serverName) {
+        preferences.edit().putString(SERVER_NAME_KEY, serverName).apply();
+    }
+
+    @Override
+    public String getSavedServerName() {
+        return preferences.getString(SERVER_NAME_KEY, "?");
+    }
 }

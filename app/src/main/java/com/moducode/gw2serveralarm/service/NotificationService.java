@@ -6,7 +6,7 @@ package com.moducode.gw2serveralarm.service;
 
 public interface NotificationService {
 
-    void showMonitoringNotification();
+    void showMonitoringNotification(String serverName);
 
     void removeMonitoringNotification();
 

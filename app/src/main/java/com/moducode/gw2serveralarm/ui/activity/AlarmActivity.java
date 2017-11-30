@@ -32,7 +32,7 @@ public class AlarmActivity extends MvpActivity<AlarmActivityContract.View, Alarm
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_alarm);
+        setContentView(R.layout.activity_alarm);
         ButterKnife.bind(this);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);

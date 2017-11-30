@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">World Monitor</string>
+    <string name="app_name">GW2 World Monitor</string>
     <string name="action_settings">Settings</string>
 
     <!--Error/success messages-->
@@ -10,7 +10,7 @@
 
     <!--Notifications-->
     <string name="notif_monitor_title" translatable="false">GW2 World Monitor</string>
-    <string name="notif_monitor_summ" translatable="true">You are currently monitoring a server</string>
+    <string name="notif_monitor_summ" translatable="true">You are currently monitoring: %1$s</string>
     <string name="notif_button_stop" translatable="true">Stop</string>
     <string name="notif_slot_free">Slot available!</string>
 
@@ -37,8 +37,8 @@
     <string name="pref_test_summary">Tapping here will let you monitor a fake test server. The notifications are sent out on a regular basis of every 2 minutes</string>
     <string name="pref_test_key">KEY_TEST_SERVER</string>
     <string name="button_stop">Stop</string>
-    <string name="tv_stop_msg">Your server now has an empty slot! \n\nTap here to stop the alarm!</string>
-    <string name="tv_monitoring_msg">You are currently monitoring a server\n\nTap here to stop</string>
+    <string name="tv_stop_msg">%1$s now has an empty slot! \n\nTap here to stop the alarm!</string>
+    <string name="tv_monitoring_msg">You are currently monitoring %1$s \n\nTap here to stop</string>
 
 
 </resources>

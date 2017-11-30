@@ -1,6 +1,8 @@
 package com.moducode.gw2serveralarm.service;
 
 
+import com.moducode.gw2serveralarm.data.ServerModel;
+
 import javax.inject.Inject;
 
 /**
@@ -26,17 +28,18 @@ public class FcmSubscribeServiceImpl implements FcmSubscribeService {
     }
 
     @Override
-    public void subscribeToTopic(String topicId) {
-        fcmMessagingDelegate.subscribeToTopic(topicId);
-        sharedPrefsManager.saveServer(topicId);
+    public void subscribeToServer(ServerModel server) {
+        fcmMessagingDelegate.subscribeToTopic(server.getIdString());
+        sharedPrefsManager.saveServerId(server.getIdString());
+        sharedPrefsManager.saveServerName(server.getName());
         if(sharedPrefsManager.isNotificationEnabled()){
-            notificationService.showMonitoringNotification();
+            notificationService.showMonitoringNotification(sharedPrefsManager.getSavedServerName());
         }
     }
 
     @Override
     public void unSubscribeFromTopic() {
-        String topic = sharedPrefsManager.getSavedServer();
+        String topic = sharedPrefsManager.getSavedServerId();
         fcmMessagingDelegate.unsubscribeFromTopic(topic);
         sharedPrefsManager.clearSavedTopic();
         notificationService.removeMonitoringNotification();
@@ -50,12 +53,17 @@ public class FcmSubscribeServiceImpl implements FcmSubscribeService {
     @Override
     public void showNotification(){
         if(sharedPrefsManager.isNotificationEnabled() && sharedPrefsManager.isMonitoringServer()){
-            notificationService.showMonitoringNotification();
+            notificationService.showMonitoringNotification(sharedPrefsManager.getSavedServerName());
         }
     }
 
     @Override
     public boolean isSubscribed() {
         return sharedPrefsManager.isMonitoringServer();
+    }
+
+    @Override
+    public String getSavedServer() {
+        return sharedPrefsManager.getSavedServerName();
     }
 }

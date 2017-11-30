@@ -15,6 +15,7 @@ import com.moducode.gw2serveralarm.R;
 import com.moducode.gw2serveralarm.dagger.ContextModule;
 import com.moducode.gw2serveralarm.dagger.DaggerPresenterComponent;
 import com.moducode.gw2serveralarm.dagger.PresenterComponent;
+import com.moducode.gw2serveralarm.data.ServerModel;
 import com.moducode.gw2serveralarm.service.FcmSubscribeService;
 
 
@@ -63,7 +64,8 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
         // TODO: 2017-11-20 make this a constant somewhere
         if (preference.getKey().equals(getString(R.string.pref_test_key))) {
-            fcmSubscribeService.subscribeToTopic("alarmtest");
+            ServerModel fakeServer = new ServerModel(6969, "fakeServer", "null");
+            fcmSubscribeService.subscribeToServer(fakeServer);
             getActivity().finish();
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference);

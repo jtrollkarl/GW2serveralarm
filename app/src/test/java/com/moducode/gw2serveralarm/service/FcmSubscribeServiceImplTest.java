@@ -1,5 +1,7 @@
 package com.moducode.gw2serveralarm.service;
 
+import com.moducode.gw2serveralarm.data.ServerModel;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -7,7 +9,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -33,6 +35,9 @@ public class FcmSubscribeServiceImplTest {
     private FcmSubscribeServiceImpl subject;
 
     private static final String topicId = "testTopic";
+    private static final String testServerName = "test";
+
+    private ServerModel nonFullServer = new ServerModel(2, "Test", "Medium");
 
     @Before
     public void setUp() throws Exception {
@@ -42,27 +47,31 @@ public class FcmSubscribeServiceImplTest {
     @Test
     public void subscribeToTopic_NOTIFICATION_TRUE() throws Exception {
         when(sharedPrefsManager.isNotificationEnabled()).thenReturn(true);
+        when(sharedPrefsManager.getSavedServerName()).thenReturn(testServerName);
 
-        subject.subscribeToTopic(topicId);
+        subject.subscribeToServer(nonFullServer);
 
-        verify(fcmMessagingDelegate).subscribeToTopic(topicId);
-        verify(sharedPrefsManager).saveServer(topicId);
-        verify(notificationService).showMonitoringNotification();
+        verify(fcmMessagingDelegate).subscribeToTopic(nonFullServer.getIdString());
+        verify(sharedPrefsManager).saveServerId(nonFullServer.getIdString());
+        verify(sharedPrefsManager).saveServerName(nonFullServer.getName());
+        verify(notificationService).showMonitoringNotification(testServerName);
     }
 
     @Test
     public void subscribeToTopic_NOTIFICATION_FALSE() throws Exception {
         when(sharedPrefsManager.isNotificationEnabled()).thenReturn(false);
 
-        subject.subscribeToTopic(topicId);
+        subject.subscribeToServer(nonFullServer);
 
-        verify(fcmMessagingDelegate).subscribeToTopic(topicId);
-        verify(sharedPrefsManager).saveServer(topicId);
+        verify(fcmMessagingDelegate).subscribeToTopic(nonFullServer.getIdString());
+        verify(sharedPrefsManager).saveServerId(nonFullServer.getIdString());
+        verify(sharedPrefsManager).saveServerName(nonFullServer.getName());
+        verify(notificationService, never()).showMonitoringNotification(nonFullServer.getName());
     }
 
     @Test
     public void unSubscribeFromTopic() throws Exception {
-        when(sharedPrefsManager.getSavedServer()).thenReturn(topicId);
+        when(sharedPrefsManager.getSavedServerId()).thenReturn(topicId);
 
         subject.unSubscribeFromTopic();
 
@@ -92,9 +101,10 @@ public class FcmSubscribeServiceImplTest {
     public void showNotification_TRUE() throws Exception{
         when(sharedPrefsManager.isMonitoringServer()).thenReturn(true);
         when(sharedPrefsManager.isNotificationEnabled()).thenReturn(true);
+        when(sharedPrefsManager.getSavedServerName()).thenReturn(testServerName);
 
         subject.showNotification();
-        verify(notificationService).showMonitoringNotification();
+        verify(notificationService).showMonitoringNotification(testServerName);
     }
 
     @Test
@@ -103,7 +113,14 @@ public class FcmSubscribeServiceImplTest {
         when(sharedPrefsManager.isMonitoringServer()).thenReturn(true);
 
         subject.showNotification();
-        verify(notificationService, never()).showMonitoringNotification();
+        verify(notificationService, never()).showMonitoringNotification(anyString());
+    }
+
+    @Test
+    public void getSavedServerName() throws Exception{
+        when(sharedPrefsManager.getSavedServerName()).thenReturn(testServerName);
+
+        assertEquals(subject.getSavedServer(), testServerName);
     }
 
 }

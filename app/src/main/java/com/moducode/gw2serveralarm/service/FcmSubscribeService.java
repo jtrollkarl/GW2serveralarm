@@ -1,6 +1,7 @@
 package com.moducode.gw2serveralarm.service;
 
-import io.reactivex.Completable;
+
+import com.moducode.gw2serveralarm.data.ServerModel;
 
 /**
  * Created by Jay on 2017-11-07.
@@ -8,7 +9,7 @@ import io.reactivex.Completable;
 
 public interface FcmSubscribeService {
 
-    void subscribeToTopic(String topicId);
+    void subscribeToServer(ServerModel server);
 
     void unSubscribeFromTopic();
 
@@ -18,4 +19,5 @@ public interface FcmSubscribeService {
 
     boolean isSubscribed();
 
+    String getSavedServer();
 }
