@@ -13,7 +13,6 @@ public class FcmMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = FcmMessagingService.class.getSimpleName();
 
-    // TODO: 2017-11-23 test whether or not data messages are received
 
     public FcmMessagingService() {
 
