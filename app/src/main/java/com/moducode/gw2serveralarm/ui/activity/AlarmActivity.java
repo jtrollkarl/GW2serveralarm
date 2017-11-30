@@ -23,6 +23,7 @@ import butterknife.OnClick;
 
 public class AlarmActivity extends MvpActivity<AlarmActivityContract.View, AlarmActivityContract.Actions>
         implements AlarmActivityContract.View {
+
     @BindView(R.id.tv_stop_msg)
     TextView tvStopMsg;
 
@@ -60,6 +61,11 @@ public class AlarmActivity extends MvpActivity<AlarmActivityContract.View, Alarm
         Intent alarmActivityIntent = new Intent(context, AlarmActivity.class);
         alarmActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return alarmActivityIntent;
+    }
+
+    @Override
+    public void showServerName(String serverName) {
+        tvStopMsg.setText(getString(R.string.tv_stop_msg_server, serverName));
     }
 
     @Override

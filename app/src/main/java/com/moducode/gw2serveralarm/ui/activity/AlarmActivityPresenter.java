@@ -39,6 +39,7 @@ public class AlarmActivityPresenter extends MvpBasePresenter<AlarmActivityContra
     @Override
     public void startAlarmService() {
         fcmSubscribeService.unSubscribeFromTopic();
+        if(isViewAttached()) getView().showServerName(fcmSubscribeService.getSavedServer());
         alarmServiceManager.startAlarmService();
     }
 

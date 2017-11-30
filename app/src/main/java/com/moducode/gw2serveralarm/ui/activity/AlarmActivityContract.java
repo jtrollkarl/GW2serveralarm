@@ -10,7 +10,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 public interface AlarmActivityContract {
 
     interface View extends MvpView {
-
+        void showServerName(String serverName);
     }
 
     interface Actions extends MvpPresenter<View> {
