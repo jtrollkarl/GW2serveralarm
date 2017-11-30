@@ -4,27 +4,28 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
     android:orientation="horizontal"
     android:paddingBottom="16dp"
     android:paddingLeft="8dp"
     android:paddingRight="8dp"
-    android:paddingTop="16dp"
-    android:clickable="true">
-
-    <TextView
-        android:id="@+id/server_row_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:fontFamily="@font/gwfont"
-        tools:text="Server name" />
+    android:paddingTop="16dp">
 
     <TextView
         android:id="@+id/server_row_population"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
+        android:layout_gravity="end"
         android:fontFamily="@font/gwfont"
         tools:text="Population" />
+
+    <TextView
+        android:id="@+id/server_row_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:fontFamily="@font/gwfont"
+        tools:text="Server name" />
 
 </FrameLayout>

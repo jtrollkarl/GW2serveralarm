@@ -105,7 +105,6 @@ public class AlarmService extends Service {
     private Notification getNotification(){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ALARM)
                 .setSmallIcon(R.drawable.ic_monitoring_server)
-                .setContentTitle(getString(R.string.notif_monitor_title))
                 .setContentText(getString(R.string.notif_slot_free))
                 .setChannelId(CHANNEL_ALARM)
                 .setPriority(Notification.PRIORITY_MAX)

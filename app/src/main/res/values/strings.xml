@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GW2serveralarm</string>
+    <string name="app_name">World Monitor</string>
     <string name="action_settings">Settings</string>
 
     <!--Error/success messages-->
@@ -37,8 +37,8 @@
     <string name="pref_test_summary">Tapping here will let you monitor a fake test server. The notifications are sent out on a regular basis of every 2 minutes</string>
     <string name="pref_test_key">KEY_TEST_SERVER</string>
     <string name="button_stop">Stop</string>
-    <string name="tv_stop_msg">Your server now has an empty slot!</string>
-
+    <string name="tv_stop_msg">Your server now has an empty slot! \n\nTap here to stop the alarm!</string>
+    <string name="tv_monitoring_msg">You are currently monitoring a server\n\nTap here to stop</string>
 
 
 </resources>

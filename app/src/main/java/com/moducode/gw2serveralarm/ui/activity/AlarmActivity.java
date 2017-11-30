@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.WindowManager;
-import android.widget.Button;
+import android.widget.TextView;
 
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 import com.moducode.gw2serveralarm.R;
@@ -23,11 +23,11 @@ import butterknife.OnClick;
 
 public class AlarmActivity extends MvpActivity<AlarmActivityContract.View, AlarmActivityContract.Actions>
         implements AlarmActivityContract.View {
+    @BindView(R.id.tv_stop_msg)
+    TextView tvStopMsg;
 
     //no fragment here as the alarm will always take up the entire display area
 
-    @BindView(R.id.b_stop)
-    Button bStop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +74,7 @@ public class AlarmActivity extends MvpActivity<AlarmActivityContract.View, Alarm
         presenter.stopAlarmService();
     }
 
-    @OnClick(R.id.b_stop)
+    @OnClick(R.id.tv_stop_msg)
     public void onViewClicked() {
         presenter.stopAlarmService();
         finish();
