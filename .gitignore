@@ -7,3 +7,7 @@
 /build
 /captures
 .externalNativeBuild
+app/paid/release/output.json
+app/free/release/output.json
+app/free/release/app-free-release.apk
+app/paid/release/app-paid-release.apk
