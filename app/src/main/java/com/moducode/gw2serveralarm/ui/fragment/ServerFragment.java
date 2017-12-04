@@ -2,6 +2,7 @@ package com.moducode.gw2serveralarm.ui.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,11 +13,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hannesdorfmann.mosby3.mvp.lce.MvpLceFragment;
+import com.hannesdorfmann.mosby3.mvp.viewstate.lce.LceViewState;
+import com.hannesdorfmann.mosby3.mvp.viewstate.lce.MvpLceViewStateFragment;
+import com.hannesdorfmann.mosby3.mvp.viewstate.lce.data.RetainingLceViewState;
 import com.moducode.gw2serveralarm.R;
 import com.moducode.gw2serveralarm.dagger.ContextModule;
 
@@ -32,7 +37,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class ServerFragment extends MvpLceFragment<SwipeRefreshLayout, List<ServerModel>, ServerFragmentContract.View, ServerFragmentContract.Actions>
+public class ServerFragment extends MvpLceViewStateFragment<SwipeRefreshLayout, List<ServerModel>, ServerFragmentContract.View, ServerFragmentContract.Actions>
         implements ServerFragmentContract.View,
         SwipeRefreshLayout.OnRefreshListener,
         ServerListAdapter.OnItemClickListener {
@@ -73,6 +78,16 @@ public class ServerFragment extends MvpLceFragment<SwipeRefreshLayout, List<Serv
         serverRecycler.setAdapter(adapter);
     }
 
+    @Override
+    public List<ServerModel> getData() {
+        return adapter == null ? null : adapter.getData();
+    }
+
+    @NonNull
+    @Override
+    public LceViewState<List<ServerModel>, ServerFragmentContract.View> createViewState() {
+        return new RetainingLceViewState<>();
+    }
 
     @Override
     public ServerFragmentContract.Actions createPresenter() {
@@ -91,7 +106,6 @@ public class ServerFragment extends MvpLceFragment<SwipeRefreshLayout, List<Serv
     @Override
     public void showError(Throwable e, boolean pullToRefresh) {
         super.showError(e, false);
-        Log.e(TAG, "presenter error", e);
         contentView.setRefreshing(false);
     }
 
@@ -114,18 +128,13 @@ public class ServerFragment extends MvpLceFragment<SwipeRefreshLayout, List<Serv
     }
 
     @Override
-    public void showAlarm() {
-        Log.d(TAG, "show alarm!!!!!!!");
-    }
-
-    @Override
     public void onServerClick(ServerModel server) {
         presenter.monitorServer(server);
     }
 
     @Override
     protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
-        return "Error fetching servers";
+        return getString(R.string.error_fetch_servers);
     }
 
     @Override
@@ -147,6 +156,7 @@ public class ServerFragment extends MvpLceFragment<SwipeRefreshLayout, List<Serv
 
     @Override
     public void onRefresh() {
+        Log.d(TAG, "Refreshing servers...");
         loadData(true);
     }
 
@@ -160,7 +170,6 @@ public class ServerFragment extends MvpLceFragment<SwipeRefreshLayout, List<Serv
     public void onResume() {
         super.onResume();
         presenter.onResume();
-
     }
 
     @Override

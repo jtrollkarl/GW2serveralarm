@@ -56,6 +56,14 @@ public class ServerListAdapter extends RecyclerView.Adapter<ServerListAdapter.Vi
         holder.serverPopulation.setTextColor(serverModel.getPopulationColor());
     }
 
+    public List<ServerModel> getData(){
+        if(serverModelList != null){
+            return serverModelList;
+        }else {
+            return null;
+        }
+    }
+
     @Override
     public int getItemCount() {
         if(serverModelList != null){

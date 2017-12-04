@@ -60,7 +60,7 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
                     @Override
                     public void onComplete() {
                         if (isViewAttached()) {
-                            getView().showMessage(R.string.success_fetch_servers);
+                            logger.logD(TAG, "fetched servers from network");
                             getView().showContent();
                         }
                     }
@@ -75,6 +75,7 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
 
                     @Override
                     public void onError(@NonNull Throwable e) {
+                        logger.logE(TAG, "Error fetching servers?", e);
                         if (isViewAttached()) {
                             getView().showError(e, pullToRefresh);
                         }
@@ -85,10 +86,9 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
     @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onNotificationReceived(MessageEvent messageEvent) {
-        logger.logD(TAG, messageEvent.getMessage());
+        logger.logD(TAG, "Notification received, message: " + messageEvent.getMessage());
         fcmSubscribeService.unSubscribeFromTopic();
         if(isViewAttached()){
-            getView().showAlarm();
             getView().hideMonitoringView();
         }
     }
@@ -118,7 +118,6 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
         }else {
             fcmSubscribeService.removeNotification();
             if(isViewAttached()) getView().hideMonitoringView();
-            fetchServers(false);
         }
     }
 

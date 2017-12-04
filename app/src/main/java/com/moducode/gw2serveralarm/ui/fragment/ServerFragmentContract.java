@@ -16,7 +16,6 @@ import java.util.List;
 public interface ServerFragmentContract {
 
     interface View extends MvpLceView<List<ServerModel>>{
-        void showAlarm();
         void showMessage(@StringRes int msg);
         void showMonitoringView(String serverName);
         void hideMonitoringView();

@@ -75,7 +75,6 @@ public class ServerFragmentPresenterTest {
         subject.fetchServers(true);
 
         verify(view).setData(ArgumentMatchers.<ServerModel>anyList());
-        verify(view).showMessage(R.string.success_fetch_servers);
         verify(view).showContent();
     }
 
@@ -124,7 +123,6 @@ public class ServerFragmentPresenterTest {
     public void onReceiveNotification() throws Exception{
         subject.onNotificationReceived(new MessageEvent("Test"));
 
-        verify(view).showAlarm();
         verify(view).hideMonitoringView();
     }
 
