@@ -34,7 +34,7 @@
     <string name="pref_alarm_light_summary">Set whether or not the LED will flash upon an alarm being triggered</string>
     <string name="pref_alarm_sound">Sound</string>
     <string name="pref_test">Test server</string>
-    <string name="pref_test_summary">Tapping here will let you monitor a fake test server. The notifications are sent out on a regular basis of every 2 minutes</string>
+    <string name="pref_test_summary">Tapping here will let you monitor a fake test server. The notifications are sent out on a regular basis of every minute</string>
     <string name="pref_test_key">KEY_TEST_SERVER</string>
     <string name="button_stop">Stop</string>
     <string name="tv_stop_msg_server">%1$s now has an empty slot! \n\nTap here to stop the alarm!</string>
