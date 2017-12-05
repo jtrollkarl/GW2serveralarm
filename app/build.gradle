@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 
 android {
+
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
     defaultConfig {
@@ -17,27 +19,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     flavorDimensions "tier"
-
     productFlavors {
         free {
             dimension "tier"
             minSdkVersion 16
-            applicationId 'com.moducode.gw2serveralarm.free'
+            applicationId 'com.moducode.gw2serveralarm.unpaid'
             targetSdkVersion 26
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 1
-            versionName '1.0'
-        }
-        paid{
-            dimension "tier"
-            minSdkVersion 16
-            applicationId 'com.moducode.gw2serveralarm.paid'
-            targetSdkVersion 26
-            testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 1
-            versionName '1.0'
+            versionCode 4
+            versionName '1.2'
         }
     }
 }
@@ -60,6 +51,10 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.5'
     //Firebase/FCM
+    releaseImplementation('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
+        transitive = true
+    }
+    implementation 'com.google.firebase:firebase-core:11.6.2'
     implementation 'com.google.firebase:firebase-messaging:11.6.2'
     //Google services, base
     implementation 'com.google.android.gms:play-services-base:11.6.2'
@@ -79,5 +74,6 @@ dependencies {
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 }
+
 
 apply plugin: 'com.google.gms.google-services'
