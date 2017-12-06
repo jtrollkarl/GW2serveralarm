@@ -84,6 +84,11 @@ public class AlarmService extends Service {
     }
 
     private void playAlarm(){
+        if(mediaPlayer == null){
+            Log.w(TAG, "MediaPlayer was null, recreating...");
+            mediaPlayer = new MediaPlayer();
+        }
+
         try {
             mediaPlayer.reset();
             mediaPlayer.setDataSource(this, Uri.parse(sharedPrefsManager.getAlarmUri()));
