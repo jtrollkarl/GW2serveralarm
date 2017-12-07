@@ -24,11 +24,11 @@ android {
         free {
             dimension "tier"
             minSdkVersion 16
-            applicationId 'com.moducode.gw2serveralarm.unpaid'
+            applicationId 'com.moducode.gw2serveralarm.gratis'
             targetSdkVersion 26
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 4
-            versionName '1.2'
+            versionCode 5
+            versionName '1.3'
         }
     }
 }
