@@ -18,6 +18,8 @@ import java.util.List;
 
 public class ServerListAdapter extends RecyclerView.Adapter<ServerListAdapter.ViewHolder>{
 
+    private static final String TAG = "ServerListAdapter";
+
     private List<ServerModel> serverModelList;
     private OnItemClickListener listener;
 
@@ -35,21 +37,13 @@ public class ServerListAdapter extends RecyclerView.Adapter<ServerListAdapter.Vi
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View v = inflater.inflate(R.layout.server_list_row, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.server_list_row, parent, false);
         return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         final ServerModel serverModel = serverModelList.get(position);
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onServerClick(serverModel);
-            }
-        });
 
         holder.serverName.setText(serverModel.getName());
         holder.serverPopulation.setText(serverModel.getPopulation());
@@ -82,6 +76,12 @@ public class ServerListAdapter extends RecyclerView.Adapter<ServerListAdapter.Vi
             super(itemView);
             serverName = itemView.findViewById(R.id.server_row_name);
             serverPopulation = itemView.findViewById(R.id.server_row_population);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onServerClick(serverModelList.get(getAdapterPosition()));
+                }
+            });
         }
     }
 
