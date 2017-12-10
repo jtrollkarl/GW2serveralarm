@@ -19,15 +19,16 @@ import static org.mockito.Mockito.verify;
 public class AlarmActivityPresenterTest {
 
     @Mock
-    PresenterLogger logger;
+    private PresenterLogger logger;
 
     @Mock
-    FcmSubscribeService fcmSubscribeService;
+    private FcmSubscribeService fcmSubscribeService;
 
     @Mock
-    AlarmServiceManager alarmServiceManager;
+    private AlarmServiceManager alarmServiceManager;
 
-    @Mock AlarmActivityContract.View view;
+    @Mock
+    private AlarmActivityContract.View view;
 
     @InjectMocks
     private AlarmActivityPresenter subject;

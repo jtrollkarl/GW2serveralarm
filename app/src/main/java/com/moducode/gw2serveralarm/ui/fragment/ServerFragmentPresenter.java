@@ -75,7 +75,7 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        logger.logE(TAG, "Error fetching servers?", e);
+                        logger.logE(TAG, "Error fetching servers", e);
                         if (isViewAttached()) {
                             getView().showError(e, pullToRefresh);
                         }
