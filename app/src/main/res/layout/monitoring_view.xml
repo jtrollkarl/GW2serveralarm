@@ -13,5 +13,4 @@
         android:text="@string/tv_monitoring_msg"
         android:textAlignment="center"/>
 
-
 </merge>
