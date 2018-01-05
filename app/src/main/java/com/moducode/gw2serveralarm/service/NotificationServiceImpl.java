@@ -25,8 +25,6 @@ public class NotificationServiceImpl implements NotificationService {
     private final Context appContext;
     private Notification notification;
 
-    // TODO: 2017-11-13 clicking on notification should take the user back to the app
-    // TODO: 2017-11-13 add name of server to notification
 
     @Inject
     public NotificationServiceImpl(Context appContext) {
@@ -62,7 +60,6 @@ public class NotificationServiceImpl implements NotificationService {
         Intent mainIntent = new Intent(appContext, MainActivity.class);
         return PendingIntent.getActivity(appContext, 0, mainIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
-
 
     private boolean isNotificationShowing(){
         return notification != null;

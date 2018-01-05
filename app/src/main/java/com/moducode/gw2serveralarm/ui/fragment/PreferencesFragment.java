@@ -62,10 +62,8 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
 
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
-        // TODO: 2017-11-20 make this a constant somewhere
         if (preference.getKey().equals(getString(R.string.pref_test_key))) {
-            ServerModel fakeServer = new ServerModel(6969, "TestServer", "null");
-            fcmSubscribeService.subscribeToServer(fakeServer);
+            fcmSubscribeService.subscribeToServer(ServerModel.getFakeServer());
             getActivity().finish();
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference);

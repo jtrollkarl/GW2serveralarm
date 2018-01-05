@@ -15,9 +15,6 @@ public class FcmSubscribeServiceImpl implements FcmSubscribeService {
     private final NotificationService notificationService;
     private final SharedPrefsManager sharedPrefsManager;
 
-
-    // TODO: 2017-11-17 how to show notification onResume from opening the app if it already exists, without redrawing it again?
-
     @Inject
     public FcmSubscribeServiceImpl(FcmMessagingDelegate fcmMessagingDelegate,
                                    SharedPrefsManager sharedPrefsManager,

@@ -99,4 +99,8 @@ public class ServerModel implements Comparable<ServerModel> {
     public int compareTo(@NonNull ServerModel serverModel) {
         return serverModel.getPopulationLevel() - this.getPopulationLevel();
     }
+
+    public static ServerModel getFakeServer(){
+        return new ServerModel(6969, "TestServer", "null");
+    }
 }
