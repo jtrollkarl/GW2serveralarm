@@ -47,11 +47,10 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
         this.compositeDisposable = new CompositeDisposable();
     }
 
+
     @Override
     public void fetchServers(final boolean pullToRefresh) {
-        if(isViewAttached()){
-            getView().showLoading(pullToRefresh);
-        }
+        ifViewAttached(view -> view.showLoading(pullToRefresh));
 
         compositeDisposable.add(serverService.listServers()
                 .subscribeOn(schedulers.io())
@@ -59,54 +58,45 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
                 .subscribeWith(new DisposableObserver<List<ServerModel>>() {
                     @Override
                     public void onComplete() {
-                        if (isViewAttached()) {
-                            logger.logD(TAG, "fetched servers from network");
-                            getView().showContent();
-                        }
+                        logger.logD(TAG, "fetched servers from network");
+                        ifViewAttached(v -> v.showContent());
                     }
 
                     @Override
                     public void onNext(@NonNull List<ServerModel> serverModels) {
-                        if (isViewAttached()) {
+                        ifViewAttached(view -> {
                             Collections.sort(serverModels);
-                            getView().setData(serverModels);
-                        }
+                            view.setData(serverModels);
+                        });
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
                         logger.logE(TAG, "Error fetching servers", e);
-                        if (isViewAttached()) {
-                            getView().showError(e, pullToRefresh);
-                        }
+                        ifViewAttached(v -> v.showError(e, pullToRefresh));
                     }
                 }));
     }
+
 
     @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onNotificationReceived(MessageEvent messageEvent) {
         logger.logD(TAG, "Notification received, message: " + messageEvent.getMessage());
         fcmSubscribeService.unSubscribeFromTopic();
-        if(isViewAttached()){
-            getView().hideMonitoringView();
-        }
+        ifViewAttached(v -> v.hideMonitoringView());
     }
 
     @Override
     public void onClickMonitoringView() {
         fcmSubscribeService.unSubscribeFromTopic();
-        if(isViewAttached()){
-            getView().hideMonitoringView();
-        }
+        ifViewAttached(v -> v.hideMonitoringView());
         fetchServers(false);
     }
 
     @Override
     public void monitorServer(final ServerModel server) {
-        if(isViewAttached()){
-            getView().showMonitoringView(server.getName());
-        }
+        ifViewAttached(v -> v.showMonitoringView(server.getName()));
         fcmSubscribeService.subscribeToServer(server);
     }
 
@@ -114,10 +104,10 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
     public void onResume() {
         if(fcmSubscribeService.isSubscribed()){
             fcmSubscribeService.showNotification();
-            if(isViewAttached()) getView().showMonitoringView(fcmSubscribeService.getSavedServer());
+            ifViewAttached(view -> view.showMonitoringView(fcmSubscribeService.getSavedServer()));
         }else {
             fcmSubscribeService.removeNotification();
-            if(isViewAttached()) getView().hideMonitoringView();
+            ifViewAttached(view -> view.hideMonitoringView());
         }
     }
 
