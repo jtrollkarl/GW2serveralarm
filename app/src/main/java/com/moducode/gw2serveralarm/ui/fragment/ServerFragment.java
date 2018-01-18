@@ -41,7 +41,6 @@ public class ServerFragment extends MvpLceViewStateFragment<SwipeRefreshLayout, 
         SwipeRefreshLayout.OnRefreshListener,
         ServerListAdapter.OnItemClickListener {
 
-    private static final String TAG = ServerFragment.class.getSimpleName();
 
     Unbinder unbinder;
     @BindView(R.id.server_recycler)
@@ -88,6 +87,7 @@ public class ServerFragment extends MvpLceViewStateFragment<SwipeRefreshLayout, 
         return new RetainingLceViewState<>();
     }
 
+    @NonNull
     @Override
     public ServerFragmentContract.Actions createPresenter() {
         Context appContext = getActivity().getApplicationContext();
