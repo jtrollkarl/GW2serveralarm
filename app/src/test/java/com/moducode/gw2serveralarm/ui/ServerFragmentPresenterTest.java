@@ -1,22 +1,16 @@
 package com.moducode.gw2serveralarm.ui;
 
-import com.moducode.gw2serveralarm.PresenterLogger;
-import com.moducode.gw2serveralarm.R;
 import com.moducode.gw2serveralarm.data.MessageEvent;
 import com.moducode.gw2serveralarm.data.ServerModel;
 import com.moducode.gw2serveralarm.retrofit.ServerService;
 import com.moducode.gw2serveralarm.schedulers.ImmediateSchedulers;
-import com.moducode.gw2serveralarm.schedulers.SchedulerProvider;
 import com.moducode.gw2serveralarm.service.FcmSubscribeService;
-import com.moducode.gw2serveralarm.service.NotificationService;
-import com.moducode.gw2serveralarm.service.SharedPrefsManager;
 import com.moducode.gw2serveralarm.ui.fragment.ServerFragmentContract;
 import com.moducode.gw2serveralarm.ui.fragment.ServerFragmentPresenter;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -25,9 +19,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
+
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -35,9 +27,6 @@ import static org.mockito.Mockito.when;
  * Created by Jay on 2017-09-02.
  */
 public class ServerFragmentPresenterTest {
-
-    @Mock
-    private PresenterLogger logger;
 
     @Mock
     private FcmSubscribeService fcmSubscribeService;
@@ -60,7 +49,7 @@ public class ServerFragmentPresenterTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        subject = new ServerFragmentPresenter(logger, fcmSubscribeService, new ImmediateSchedulers(), serverService);
+        subject = new ServerFragmentPresenter(fcmSubscribeService, new ImmediateSchedulers(), serverService);
         subject.attachView(view);
 
         fullServer = new ServerModel(1, "Test", "Full");

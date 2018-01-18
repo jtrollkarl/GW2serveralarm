@@ -5,14 +5,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.moducode.gw2serveralarm.R;
+
+import timber.log.Timber;
 
 /**
  * Created by Jay on 2017-11-12.
@@ -20,7 +19,7 @@ import com.moducode.gw2serveralarm.R;
 
 public abstract class SingleFragmentActivity extends AppCompatActivity {
 
-    private static final String TAG = "SingleFragmentActivity";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +48,9 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
         int resultCode = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
         if (resultCode != ConnectionResult.SUCCESS) {
             Toast.makeText(this, R.string.error_play_services, Toast.LENGTH_LONG).show();
-            Log.w(TAG, "Play services are not installed. App will not function correctly.");
+            Timber.w("Play services are not installed. App will not function correctly.");
         }else {
-            Log.d(TAG, "PlayServices installed.");
+            Timber.d("PlayServices installed.");
         }
     }
 

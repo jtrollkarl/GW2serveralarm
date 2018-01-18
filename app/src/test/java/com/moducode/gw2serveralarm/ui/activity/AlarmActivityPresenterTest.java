@@ -1,6 +1,5 @@
 package com.moducode.gw2serveralarm.ui.activity;
 
-import com.moducode.gw2serveralarm.PresenterLogger;
 import com.moducode.gw2serveralarm.service.AlarmServiceManager;
 import com.moducode.gw2serveralarm.service.FcmSubscribeService;
 
@@ -10,16 +9,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.verify;
 
 /**
  * Created by Jay on 2017-11-25.
  */
 public class AlarmActivityPresenterTest {
-
-    @Mock
-    private PresenterLogger logger;
 
     @Mock
     private FcmSubscribeService fcmSubscribeService;

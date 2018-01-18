@@ -1,8 +1,7 @@
 package com.moducode.gw2serveralarm.ui.fragment;
 
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
-import com.moducode.gw2serveralarm.PresenterLogger;
-import com.moducode.gw2serveralarm.R;
+import com.hannesdorfmann.mosby3.mvp.lce.MvpLceView;
 import com.moducode.gw2serveralarm.data.MessageEvent;
 import com.moducode.gw2serveralarm.data.ServerModel;
 import com.moducode.gw2serveralarm.retrofit.ServerService;
@@ -21,6 +20,7 @@ import javax.inject.Inject;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
+import timber.log.Timber;
 
 /**
  * Created by Jay on 2017-08-20.
@@ -29,18 +29,14 @@ import io.reactivex.observers.DisposableObserver;
 public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentContract.View>
         implements ServerFragmentContract.Actions {
 
-    private static final String TAG = ServerFragmentPresenter.class.getSimpleName();
 
-
-    private final PresenterLogger logger;
     private final FcmSubscribeService fcmSubscribeService;
     private final SchedulerProvider schedulers;
     private final ServerService serverService;
     private final CompositeDisposable compositeDisposable;
 
     @Inject
-    public ServerFragmentPresenter(PresenterLogger logger, FcmSubscribeService fcmSubscribeService, SchedulerProvider schedulers, ServerService serverService) {
-        this.logger = logger;
+    public ServerFragmentPresenter(FcmSubscribeService fcmSubscribeService, SchedulerProvider schedulers, ServerService serverService) {
         this.fcmSubscribeService = fcmSubscribeService;
         this.schedulers = schedulers;
         this.serverService = serverService;
@@ -58,8 +54,8 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
                 .subscribeWith(new DisposableObserver<List<ServerModel>>() {
                     @Override
                     public void onComplete() {
-                        logger.logD(TAG, "fetched servers from network");
-                        ifViewAttached(v -> v.showContent());
+                        Timber.d("Fetched servers from network");
+                        ifViewAttached(MvpLceView::showContent);
                     }
 
                     @Override
@@ -72,7 +68,7 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        logger.logE(TAG, "Error fetching servers", e);
+                        Timber.e(e,"Error fetching servers");
                         ifViewAttached(v -> v.showError(e, pullToRefresh));
                     }
                 }));
@@ -82,7 +78,7 @@ public class ServerFragmentPresenter extends MvpBasePresenter<ServerFragmentCont
     @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onNotificationReceived(MessageEvent messageEvent) {
-        logger.logD(TAG, "Notification received, message: " + messageEvent.getMessage());
+        Timber.d("Notification received message was: %s", messageEvent.getMessage());
         fcmSubscribeService.unSubscribeFromTopic();
         ifViewAttached(v -> v.hideMonitoringView());
     }

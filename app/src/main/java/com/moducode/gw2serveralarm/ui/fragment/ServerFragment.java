@@ -9,16 +9,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.hannesdorfmann.mosby3.mvp.lce.MvpLceFragment;
 import com.hannesdorfmann.mosby3.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby3.mvp.viewstate.lce.MvpLceViewStateFragment;
 import com.hannesdorfmann.mosby3.mvp.viewstate.lce.data.RetainingLceViewState;
@@ -36,6 +34,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import timber.log.Timber;
 
 public class ServerFragment extends MvpLceViewStateFragment<SwipeRefreshLayout, List<ServerModel>, ServerFragmentContract.View, ServerFragmentContract.Actions>
         implements ServerFragmentContract.View,
@@ -97,8 +96,7 @@ public class ServerFragment extends MvpLceViewStateFragment<SwipeRefreshLayout, 
                 .contextModule(new ContextModule(appContext))
                 .build();
 
-        return new ServerFragmentPresenter(component.getLogger(),
-                component.getFcmSubscribeService(),
+        return new ServerFragmentPresenter(component.getFcmSubscribeService(),
                 component.getSchedulerProvider(),
                 component.getServerService());
     }
@@ -156,7 +154,7 @@ public class ServerFragment extends MvpLceViewStateFragment<SwipeRefreshLayout, 
 
     @Override
     public void onRefresh() {
-        Log.d(TAG, "Refreshing servers...");
+        Timber.d("Refreshing servers...");
         loadData(true);
     }
 
@@ -182,7 +180,7 @@ public class ServerFragment extends MvpLceViewStateFragment<SwipeRefreshLayout, 
     public void onDestroy() {
         super.onDestroy();
         presenter.onDestroy();
-        Log.d(TAG, "onDestroy");
+        Timber.d("onDestroy called");
     }
 
     @OnClick({R.id.monitoringView})

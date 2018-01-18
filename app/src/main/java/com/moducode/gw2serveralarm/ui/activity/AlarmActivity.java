@@ -21,14 +21,13 @@ import butterknife.OnClick;
  * Created by Jay on 2017-11-17.
  */
 
+//no fragment here as the alarm will always take up the entire display area
+
 public class AlarmActivity extends MvpActivity<AlarmActivityContract.View, AlarmActivityContract.Actions>
         implements AlarmActivityContract.View {
 
     @BindView(R.id.tv_stop_msg)
     TextView tvStopMsg;
-
-    //no fragment here as the alarm will always take up the entire display area
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +50,7 @@ public class AlarmActivity extends MvpActivity<AlarmActivityContract.View, Alarm
                 .contextModule(new ContextModule(appContext))
                 .build();
 
-        return new AlarmActivityPresenter(component.getLogger(),
-                component.getFcmSubscribeService(),
+        return new AlarmActivityPresenter(component.getFcmSubscribeService(),
                 component.getAlarmServiceManager());
     }
 

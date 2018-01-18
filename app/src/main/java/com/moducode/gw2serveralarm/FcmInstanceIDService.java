@@ -1,9 +1,10 @@
 package com.moducode.gw2serveralarm;
 
-import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
+
+import timber.log.Timber;
 
 /**
  * Created by Jay on 2017-11-06.
@@ -11,12 +12,10 @@ import com.google.firebase.iid.FirebaseInstanceIdService;
 
 public class FcmInstanceIDService extends FirebaseInstanceIdService {
 
-    private static final String TAG = FcmInstanceIDService.class.getSimpleName();
-
     @Override
     public void onTokenRefresh() {
         String IID_TOKEN = FirebaseInstanceId.getInstance().getToken();
-        Log.d(TAG, IID_TOKEN);
+        Timber.d(IID_TOKEN);
     }
 
 }

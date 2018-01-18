@@ -12,7 +12,6 @@ import android.os.IBinder;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.moducode.gw2serveralarm.R;
 import com.moducode.gw2serveralarm.dagger.ContextModule;
@@ -22,6 +21,8 @@ import com.moducode.gw2serveralarm.dagger.PresenterComponent;
 import java.io.IOException;
 
 import javax.inject.Inject;
+
+import timber.log.Timber;
 
 /**
  * Created by Jay on 2017-11-25.
@@ -51,7 +52,7 @@ public class AlarmService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d(TAG, "Creating AlarmService..");
+        Timber.d("Creating AlarmService..");
 
         PresenterComponent component = DaggerPresenterComponent
                 .builder()
@@ -66,7 +67,7 @@ public class AlarmService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "Starting AlarmService...");
+        Timber.d("Starting AlarmService...");
 
         startForeground(CHANNEL_ALARM_ID, getNotification());
         if(grantAudioFocus()){
@@ -85,7 +86,7 @@ public class AlarmService extends Service {
 
     private void playAlarm(){
         if(mediaPlayer == null){
-            Log.w(TAG, "MediaPlayer was null, recreating...");
+            Timber.w("MediaPlayer was null, recreating...");
             mediaPlayer = new MediaPlayer();
         }
 
@@ -97,7 +98,7 @@ public class AlarmService extends Service {
             mediaPlayer.prepare();
             mediaPlayer.start();
         } catch (IOException e) {
-            Log.e(TAG, "No alarm sound found?", e);
+            Timber.e(e, "No alarm sound found?");
             stopMediaPlayer();
         }
     }
@@ -109,7 +110,7 @@ public class AlarmService extends Service {
     // TODO: 2017-11-29 move to notification service?
     private Notification getNotification(){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ALARM)
-                .setSmallIcon(R.drawable.ic_monitoring_server)
+                .setSmallIcon(R.drawable.ic_notification)
                 .setContentText(getString(R.string.notif_slot_free))
                 .setChannelId(CHANNEL_ALARM)
                 .setPriority(Notification.PRIORITY_MAX)
@@ -123,7 +124,7 @@ public class AlarmService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "Killing AlarmService and freeing resources");
+        Timber.d("Killing AlarmService and freeing resources");
         stopForeground(true);
         stopMediaPlayer();
         stopVibrator();
