@@ -7,6 +7,8 @@
     <string name="success_fetch_servers" translatable="true">Fetched servers</string>
     <string name="error_server_not_full" translatable="true">This server is not full!</string>
     <string name="error_play_services">GooglePlay services are not installed</string>
+    <string name="error_refresh">An error has occurred! Tap here to retry</string>
+
 
     <!--Notifications-->
     <string name="notif_monitor_title" translatable="false">GW2 World Monitor</string>
@@ -40,6 +42,7 @@
     <string name="tv_stop_msg_server">%1$s now has an empty slot! \n\nTap here to stop the alarm!</string>
     <string name="tv_stop_msg_no_server">Your chosen world now has an empty slot! \n\nTap here to stop the alarm!</string>
     <string name="tv_monitoring_msg">You are currently monitoring %1$s \n\nTap here to stop</string>
+
 
 
 </resources>
