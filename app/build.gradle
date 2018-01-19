@@ -24,23 +24,36 @@ android {
         free {
             dimension "tier"
             minSdkVersion 16
-            applicationId 'com.moducode.gw2serveralarm.gratis'
+            applicationIdSuffix '.free'
             targetSdkVersion 26
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
             versionCode 1
             versionName '1'
+            versionNameSuffix "-free"
         }
 
-        paid{
+        paid {
             dimension "tier"
             minSdkVersion 16
-            applicationId 'com.moducode.gw2serveralarm.gratis'
+            applicationIdSuffix '.paid'
             targetSdkVersion 26
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
             versionCode 1
             versionName '1'
+            versionNameSuffix "-paid"
         }
     }
+
+    sourceSets{
+        free {
+            java.srcDirs = ['src/main/java', 'src/free/java']
+        }
+
+        paid {
+            java.srcDirs = ['src/main/java', 'src/paid/java']
+        }
+    }
+
     compileOptions {
         targetCompatibility 1.8
         sourceCompatibility 1.8
@@ -74,6 +87,8 @@ dependencies {
     }
     implementation 'com.google.firebase:firebase-core:11.8.0'
     implementation 'com.google.firebase:firebase-messaging:11.8.0'
+    freeImplementation 'com.google.firebase:firebase-ads:11.8.0'
+
 
     //Google services, base
     implementation 'com.google.android.gms:play-services-base:11.8.0'
