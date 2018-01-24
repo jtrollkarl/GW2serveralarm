@@ -59,6 +59,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "914509751457-puk4aa05mkt8c8ap8kj058rc1h0trv5b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.moducode.gw2serveralarm.free",
+            "certificate_hash": "5e18564e825c4c7866b6529f517517dd88ce2fe1"
+          }
+        },
+        {
           "client_id": "914509751457-iar1i8gtu7eq38lifif3du9ro7bp7t1i.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -94,6 +102,102 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "914509751457-5v3d6dt05ru0gfmi21ghhft7qdaoin55.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.moducode.gw2serveralarm.paid",
+            "certificate_hash": "5e18564e825c4c7866b6529f517517dd88ce2fe1"
+          }
+        },
+        {
+          "client_id": "914509751457-iar1i8gtu7eq38lifif3du9ro7bp7t1i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYVjanI_GU5PFR8Lb2GLWwGKG4sbZUaoI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "914509751457-iar1i8gtu7eq38lifif3du9ro7bp7t1i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:914509751457:android:18354c0feffb73c9",
+        "android_client_info": {
+          "package_name": "com.moducode.gw2serveralarm.diap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "914509751457-aq83pl095bpor173p68ohvq7c0ru92jj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.moducode.gw2serveralarm.diap",
+            "certificate_hash": "5e18564e825c4c7866b6529f517517dd88ce2fe1"
+          }
+        },
+        {
+          "client_id": "914509751457-iar1i8gtu7eq38lifif3du9ro7bp7t1i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYVjanI_GU5PFR8Lb2GLWwGKG4sbZUaoI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "914509751457-iar1i8gtu7eq38lifif3du9ro7bp7t1i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:914509751457:android:cfc30a888883b0b9",
+        "android_client_info": {
+          "package_name": "com.moducode.gw2serveralarm.eerf"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "914509751457-8b79n5c64f4idscfn7m3q4rj8ura6idp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.moducode.gw2serveralarm.eerf",
+            "certificate_hash": "5e18564e825c4c7866b6529f517517dd88ce2fe1"
+          }
+        },
         {
           "client_id": "914509751457-iar1i8gtu7eq38lifif3du9ro7bp7t1i.apps.googleusercontent.com",
           "client_type": 3

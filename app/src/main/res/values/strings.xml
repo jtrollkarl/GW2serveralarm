@@ -44,8 +44,8 @@
     <string name="tv_monitoring_msg">You are currently monitoring %1$s \n\nTap here to stop</string>
 
     <!--Admob-->
-    <string name="admob_app_id" translatable="false">ca-app-pub-4902974118735215~7299644400</string>
-    <string name="admob_server_list_id" translatable="false">ca-app-pub-4902974118735215/3700979047</string>
+    <string name="admob_app_id" translatable="false">ca-app-pub-4902974118735215~7951117187</string>
+    <string name="admob_server_list_id" translatable="false">ca-app-pub-4902974118735215/6745367796</string>
 
 
 

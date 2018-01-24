@@ -24,7 +24,7 @@ android {
         free {
             dimension "tier"
             minSdkVersion 16
-            applicationIdSuffix '.free'
+            applicationIdSuffix '.eerf'
             targetSdkVersion 26
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
             versionCode 1
@@ -35,7 +35,7 @@ android {
         paid {
             dimension "tier"
             minSdkVersion 16
-            applicationIdSuffix '.paid'
+            applicationIdSuffix '.diap'
             targetSdkVersion 26
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
             versionCode 1
