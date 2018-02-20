@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#D60000</color>
+    <color name="colorPrimaryDark">#c00000</color>
+    <color name="colorAccent">#9E9E9E</color>
+
+    <color name="pop_low">#C6E0B4</color>
+    <color name="pop_medium">#A9D08E</color>
+    <color name="pop_high">#FFC000</color>
+    <color name="pop_very_high">#ED7D31</color>
+    <color name="pop_full">#FF0000</color>
 </resources>
