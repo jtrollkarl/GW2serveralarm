@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -43,6 +44,7 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
         component.injectPreferencesFragment(this);
 
         addPreferencesFromResource(R.xml.preferences);
+        PreferenceManager.setDefaultValues(this.getActivity(), R.xml.preferences, false);
         getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }
 

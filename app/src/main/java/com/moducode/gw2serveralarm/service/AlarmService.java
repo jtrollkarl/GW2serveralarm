@@ -30,7 +30,6 @@ import timber.log.Timber;
 
 public class AlarmService extends Service {
 
-    private static final String TAG = "AlarmService";
 
     private static final String CHANNEL_ALARM = "channel_alarm";
     private static final int CHANNEL_ALARM_ID = 312;

@@ -2,6 +2,7 @@ package com.moducode.gw2serveralarm.service;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.media.RingtoneManager;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 
@@ -27,6 +28,7 @@ public class SharedPrefsManagerImpl implements SharedPrefsManager {
 
     @Inject
     public SharedPrefsManagerImpl(Context context) {
+        // TODO: 2018-02-25 this is redundant
         this.KEY_PREF_NOTIFICATION = context.getString(R.string.pref_notification_key);
         this.KEY_ALARM_VIBRATE = context.getString(R.string.pref_alarm_vibrate_key);
         this.KEY_ALARM_LIGHT = context.getString(R.string.pref_alarm_light_key);
@@ -71,7 +73,7 @@ public class SharedPrefsManagerImpl implements SharedPrefsManager {
 
     @Override
     public String getAlarmUri() {
-        return preferences.getString(KEY_ALARM_SOUND, Settings.System.DEFAULT_ALARM_ALERT_URI.toString());
+        return preferences.getString(KEY_ALARM_SOUND, RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM).toString());
     }
 
     @Override

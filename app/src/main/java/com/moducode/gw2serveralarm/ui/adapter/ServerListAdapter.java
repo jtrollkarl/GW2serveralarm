@@ -18,8 +18,6 @@ import java.util.List;
 
 public class ServerListAdapter extends RecyclerView.Adapter<ServerListAdapter.ViewHolder>{
 
-    private static final String TAG = "ServerListAdapter";
-
     private List<ServerModel> serverModelList;
     private OnItemClickListener listener;
 
@@ -51,20 +49,12 @@ public class ServerListAdapter extends RecyclerView.Adapter<ServerListAdapter.Vi
     }
 
     public List<ServerModel> getData(){
-        if(serverModelList != null){
-            return serverModelList;
-        }else {
-            return null;
-        }
+       return serverModelList;
     }
 
     @Override
     public int getItemCount() {
-        if(serverModelList != null){
-            return serverModelList.size();
-        }else {
-            return 0;
-        }
+        return serverModelList != null ? serverModelList.size() : 0;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
@@ -76,12 +66,8 @@ public class ServerListAdapter extends RecyclerView.Adapter<ServerListAdapter.Vi
             super(itemView);
             serverName = itemView.findViewById(R.id.server_row_name);
             serverPopulation = itemView.findViewById(R.id.server_row_population);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onServerClick(serverModelList.get(getAdapterPosition()));
-                }
-            });
+
+            itemView.setOnClickListener(view -> listener.onServerClick(serverModelList.get(getAdapterPosition())));
         }
     }
 
