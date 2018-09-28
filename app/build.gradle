@@ -30,8 +30,8 @@ android {
             applicationIdSuffix '.eerf'
             targetSdkVersion 27
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 2
-            versionName '1.1'
+            versionCode 3
+            versionName '1.2'
             versionNameSuffix "-free"
         }
 
