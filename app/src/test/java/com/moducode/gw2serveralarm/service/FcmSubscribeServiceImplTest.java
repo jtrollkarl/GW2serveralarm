@@ -9,10 +9,14 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Answers.RETURNS_SMART_NULLS;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.withSettings;
 
 /**
  * Created by Jay on 2017-11-16.
@@ -40,12 +44,12 @@ public class FcmSubscribeServiceImplTest {
     private ServerModel nonFullServer = new ServerModel(2, "Test", "Medium");
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    public void subscribeToTopic_NOTIFICATION_TRUE() throws Exception {
+    public void subscribeToTopic_NOTIFICATION_TRUE() {
         when(sharedPrefsManager.isNotificationEnabled()).thenReturn(true);
         when(sharedPrefsManager.getSavedServerName()).thenReturn(testServerName);
 
@@ -58,7 +62,7 @@ public class FcmSubscribeServiceImplTest {
     }
 
     @Test
-    public void subscribeToTopic_NOTIFICATION_FALSE() throws Exception {
+    public void subscribeToTopic_NOTIFICATION_FALSE() {
         when(sharedPrefsManager.isNotificationEnabled()).thenReturn(false);
 
         subject.subscribeToServer(nonFullServer);

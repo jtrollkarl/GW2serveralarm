@@ -6,7 +6,7 @@ apply plugin: 'io.fabric'
 android {
 
     compileSdkVersion 27
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.moducode.gw2serveralarm"
         minSdkVersion 16
@@ -64,7 +64,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -73,7 +73,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
     //Kotlin
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     //ktx
     implementation 'androidx.core:core-ktx:0.2'
@@ -96,7 +96,6 @@ dependencies {
     }
     implementation 'com.google.firebase:firebase-core:11.8.0'
     implementation 'com.google.firebase:firebase-messaging:11.8.0'
-    freeImplementation 'com.google.firebase:firebase-ads:11.8.0'
 
     //Eventbus
     implementation 'org.greenrobot:eventbus:3.1.1'
