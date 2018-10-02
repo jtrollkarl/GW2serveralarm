@@ -15,6 +15,6 @@ public class ServerServiceModule {
     @Provides
     @PresenterComponentScope
     ServerService serverService(){
-        return RetrofitFactory.create(ServerService.class);
+        return RetrofitFactory.INSTANCE.create(ServerService.class);
     }
 }

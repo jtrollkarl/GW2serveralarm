@@ -15,7 +15,7 @@ data class ServerModel(@field:SerializedName("id")
                   @field:Expose
                   val population: String) : Comparable<ServerModel> {
 
-    val populationLevel: Int
+    private val populationLevel: Int
         get() {
             return when (population) {
                 "Low" -> 0

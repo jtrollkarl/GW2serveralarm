@@ -9,10 +9,13 @@ import com.moducode.gw2serveralarm.ui.fragment.ServerFragmentContract;
 import com.moducode.gw2serveralarm.ui.fragment.ServerFragmentPresenter;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,6 +23,7 @@ import java.util.List;
 import io.reactivex.Observable;
 
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -45,8 +49,11 @@ public class ServerFragmentPresenterTest {
 
     private static final String testServerName = "test";
 
+    @Rule
+    public MockitoRule rule = MockitoJUnit.rule();
+
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         subject = new ServerFragmentPresenter(fcmSubscribeService, new ImmediateSchedulers(), serverService);
@@ -58,20 +65,28 @@ public class ServerFragmentPresenterTest {
     }
 
     @Test
-    public void fetchServers_SUCCESS() throws Exception {
+    public void fetchServers_SUCCESS() {
         when(serverService.listServers()).thenReturn(Observable.just(serverModelList));
 
         subject.fetchServers(true);
 
-        verify(view).setData(ArgumentMatchers.<ServerModel>anyList());
+        verify(view).setData(ArgumentMatchers.anyList());
         verify(view).showContent();
     }
 
     @Test
-    public void fetchServers_ERROR() throws Exception{
+    public void someTestMethod(){
+        Throwable e = new Throwable("Error");
+        when(serverService.listServers()).thenReturn(Observable.error(e));
+
+
+    }
+
+    @Test
+    public void fetchServers_ERROR() {
         Throwable e = new Throwable("Error");
 
-        when(serverService.listServers()).thenReturn(Observable.<List<ServerModel>>error(e));
+        when(serverService.listServers()).thenReturn(Observable.error(e));
 
         subject.fetchServers(true);
 
@@ -79,14 +94,14 @@ public class ServerFragmentPresenterTest {
     }
 
     @Test
-    public void monitorServer() throws Exception{
+    public void monitorServer() {
         subject.monitorServer(fullServer);
 
         verify(fcmSubscribeService).subscribeToServer(fullServer);
     }
 
     @Test
-    public void onResume_MONITORING_TRUE() throws Exception {
+    public void onResume_MONITORING_TRUE() {
         when(fcmSubscribeService.isSubscribed()).thenReturn(true);
         when(fcmSubscribeService.getSavedServer()).thenReturn(testServerName);
 

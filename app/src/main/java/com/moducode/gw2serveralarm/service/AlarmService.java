@@ -1,16 +1,21 @@
 package com.moducode.gw2serveralarm.service;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 
 import android.net.Uri;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 
 import com.moducode.gw2serveralarm.R;
@@ -30,7 +35,6 @@ import timber.log.Timber;
 
 public class AlarmService extends Service {
 
-    private static final String TAG = "AlarmService";
 
     private static final String CHANNEL_ALARM = "channel_alarm";
     private static final int CHANNEL_ALARM_ID = 312;
@@ -69,7 +73,11 @@ public class AlarmService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Timber.d("Starting AlarmService...");
 
-        startForeground(CHANNEL_ALARM_ID, getNotification());
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            startForeground(CHANNEL_ALARM_ID, getNotification(getChannelId()));
+
+        }else startForeground(CHANNEL_ALARM_ID, getNotification(""));
+
         if(grantAudioFocus()){
             playAlarm();
         }
@@ -107,12 +115,26 @@ public class AlarmService extends Service {
         vibrator.vibrate(new long[] {0, 500, 500, 500}, 2 );
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private String getChannelId(){
+        String NOTIFICATION_CHANNEL_ID = "com.moducode.GW2Alarm";
+        String channelName = "Alarm Service";
+        NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_HIGH);
+        chan.setLightColor(Color.RED);
+        chan.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        assert manager != null;
+        manager.createNotificationChannel(chan);
+
+        return NOTIFICATION_CHANNEL_ID;
+    }
+
     // TODO: 2017-11-29 move to notification service?
-    private Notification getNotification(){
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ALARM)
+    private Notification getNotification(String channelId){
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentText(getString(R.string.notif_slot_free))
-                .setChannelId(CHANNEL_ALARM)
+                .setChannelId(channelId)
                 .setPriority(Notification.PRIORITY_MAX)
                 .setOnlyAlertOnce(true)
                 .setShowWhen(false)

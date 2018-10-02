@@ -17,6 +17,7 @@
             android:ringtoneType="alarm"
             android:showDefault="true"
             android:showSilent="true"
+            android:defaultValue="content://settings/system/alarm_alert"
             android:title="@string/pref_alarm_sound" />
 
         <CheckBoxPreference
